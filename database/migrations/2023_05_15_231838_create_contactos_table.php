@@ -13,6 +13,11 @@ return new class extends Migration
     {
         Schema::create('contactos', function (Blueprint $table) {
             $table->id();
+            $table->string("direccion_inmueble");
+            $table->string("nombre");
+            $table->string("apellido");
+            $table->string("email");
+            $table->string("telefono");
             $table->timestamps();
         });
     }
