@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Models\Caracteristica;
+use App\Models\Propiedad;
 use Illuminate\Http\Request;
 
 class CaracteristicaController extends Controller
@@ -32,7 +33,16 @@ class CaracteristicaController extends Controller
         $caracteristica->instalaciones = $request->instalaciones;
         $caracteristica->basicos = $request->basicos;
         $caracteristica->save();
-        return response()->json($caracteristica);
+
+        $id = $caracteristica->id;
+        $id_propiedad = $request->id_propiedad;
+
+        $propiedad = Propiedad::find($id_propiedad);
+        $propiedad->caracteristica_id = $id;
+        $propiedad->save();
+
+        // return response()->json($caracteristica);
+        return response()->json($propiedad);
     }
 
     /**

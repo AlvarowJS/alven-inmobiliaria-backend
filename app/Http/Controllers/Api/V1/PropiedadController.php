@@ -3,22 +3,17 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
-use App\Models\Publicidad;
 use App\Models\Propiedad;
 use Illuminate\Http\Request;
 
-class PublicidadController extends Controller
+class PropiedadController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth:sanctum');
-    }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $datos = Publicidad::all();
+        $datos = Propiedad::with('publicidad', 'caracteristica', 'general', 'direccion', 'cliente')->get();
         return response()->json($datos);
     }
 
@@ -27,18 +22,12 @@ class PublicidadController extends Controller
      */
     public function store(Request $request)
     {
-        $publicidad = new Publicidad;
-        $publicidad->precio_venta = $request->precio_venta;
-        $publicidad->encabezado = $request->encabezado;
-        $publicidad->descripcion = $request->descripcion;
-        $publicidad->video_url = $request->video_url;
-        $publicidad->save();
-
-        $id = $publicidad->id;
-        $id_propiedad = $request->id_propiedad;
-
-        $propiedad = Propiedad::find($id_propiedad);
-        $propiedad->publicidad_id = $id;
+        $propiedad = new Propiedad;
+        $propiedad->general_id = $request->general_id;
+        $propiedad->direccion_id = $request->direccion_id;
+        $propiedad->caracteristica_id = $request->caracteristica_id;
+        $propiedad->publicidad_id = $request->publicidad_id;
+        $propiedad->cliente_id = $request->cliente_id;
         $propiedad->save();
         return response()->json($propiedad);
     }
@@ -48,7 +37,7 @@ class PublicidadController extends Controller
      */
     public function show($id)
     {
-        $datos = Publicidad::find($id);
+        $datos = Propiedad::with('publicidad', 'caracteristica', 'general', 'direccion', 'cliente', 'foto')->find($id);
         if (!$datos) {
             return response()->json(['message' => 'Registro no encontrado'], 404);
         }
@@ -60,16 +49,17 @@ class PublicidadController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $datos = Publicidad::find($id);
-        if (!$datos) {
+        $propiedad = Propiedad::find($id);
+        if (!$propiedad) {
             return response()->json(['message' => 'Registro no encontrado'], 404);
         }
-        $datos->precio_venta = $request->input('precio_venta');
-        $datos->encabezado = $request->input('encabezado');
-        $datos->descripcion = $request->input('descripcion');
-        $datos->video_url = $request->input('video_url');
-        $datos->save();
-        return response()->json($datos);
+        $propiedad->general_id = $request->general_id;
+        $propiedad->direccion_id = $request->direccion_id;
+        $propiedad->caracteristica_id = $request->caracteristica_id;
+        $propiedad->publicidad_id = $request->publicidad_id;
+        $propiedad->cliente_id = $request->cliente_id;
+        $propiedad->save();
+        return response()->json($propiedad);
     }
 
     /**
@@ -77,7 +67,7 @@ class PublicidadController extends Controller
      */
     public function destroy($id)
     {
-        $datos = Publicidad::find($id);
+        $datos = Propiedad::find($id);
         if (!$datos) {
             return response()->json(['message' => 'Registro no encontrado'], 404);
         }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Models\General;
+use App\Models\Propiedad;
 use Illuminate\Http\Request;
 
 class GeneralController extends Controller
@@ -36,7 +37,15 @@ class GeneralController extends Controller
         $general->duracion_dias = $request->duracion_dias;
         $general->requisito_arrendamiento = $request->requisito_arrendamiento;
         $general->save();
-        return response()->json($general);
+
+        $id = $general->id;
+        $id_propiedad = $request->id_propiedad;
+
+        $propiedad = Propiedad::find($id_propiedad);
+        $propiedad->general_id = $id;
+        $propiedad->save();
+        return response()->json($propiedad);
+        // return response()->json($general);
     }
 
     /**

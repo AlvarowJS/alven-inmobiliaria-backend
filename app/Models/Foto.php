@@ -4,14 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Cliente;
+use App\Models\Propiedad;
 
-class Asesor extends Model
+class Foto extends Model
 {
     use HasFactory;
 
-    public function cliente()
-    {
-        return $this->belongsTo(Cliente::class);
-    }
+    protected $fillable = [
+        'propiedad_id',
+        'fotos'
+    ];
 }

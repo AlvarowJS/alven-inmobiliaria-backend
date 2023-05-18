@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Models\Direccion;
+use App\Models\Propiedad;
 use Illuminate\Http\Request;
 
 class DireccionController extends Controller
@@ -39,7 +40,15 @@ class DireccionController extends Controller
         $direccion->LON = $request->LON;
         $direccion->ZOOM = $request->ZOOM;
         $direccion->save();
-        return response()->json($direccion);
+
+        $id = $direccion->id;
+        $id_propiedad = $request->id_propiedad;
+
+        $propiedad = Propiedad::find($id_propiedad);
+        $propiedad->direccion_id = $id;
+        $propiedad->save();
+        return response()->json($propiedad);
+        // return response()->json($direccion);
     }
 
     /**

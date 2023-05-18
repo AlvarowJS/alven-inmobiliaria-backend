@@ -4,14 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Cliente;
+use App\Models\Asesor;
 
-class Asesor extends Model
+class Cliente extends Model
 {
     use HasFactory;
-
-    public function cliente()
+    public function asesor()
     {
-        return $this->belongsTo(Cliente::class);
+        return $this->belongsTo(Asesor::class);
     }
 }
