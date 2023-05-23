@@ -9,6 +9,21 @@ use Illuminate\Http\Request;
 
 class ClienteController extends Controller
 {
+    public function registarCliente(Request $request)
+    {
+        $cliente = new Cliente;
+        $cliente->asesor_id = $request->asesor_id;
+        $cliente->nombre = $request->nombre;
+        $cliente->apellido_materno = $request->apellido_materno;
+        $cliente->apellido_paterno = $request->apellido_paterno;
+        $cliente->cedula = $request->cedula;
+        $cliente->email = $request->email;
+        $cliente->celular = $request->celular;
+        $cliente->medio_contacto = $request->medio_contacto;
+        $cliente->save();   
+        return response()->json($cliente);
+        // return response()->json($cliente);
+    }
     /**
      * Display a listing of the resource.
      */

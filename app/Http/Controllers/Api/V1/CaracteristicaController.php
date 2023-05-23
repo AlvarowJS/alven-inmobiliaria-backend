@@ -31,7 +31,9 @@ class CaracteristicaController extends Controller
         $caracteristica->mascotas = $request->mascotas;
         $caracteristica->espacios = $request->espacios;
         $caracteristica->instalaciones = $request->instalaciones;
-        $caracteristica->basicos = $request->basicos;
+        $caracteristica->restricciones = $request->restricciones;
+        $caracteristica->extras = $request->extras;
+        $caracteristica->youtube = $request->youtube;
         $caracteristica->save();
 
         $id = $caracteristica->id;
@@ -70,7 +72,9 @@ class CaracteristicaController extends Controller
         $caracteristica->mascotas = $request->mascotas;
         $caracteristica->espacios = $request->espacios;
         $caracteristica->instalaciones = $request->instalaciones;
-        $caracteristica->basicos = $request->basicos;
+        $caracteristica->resctricciones = $request->resctricciones;
+        $caracteristica->extras = $request->extras;
+        $caracteristica->youtube = $request->youtube;
 
         $caracteristica->save();
         return response()->json($caracteristica);

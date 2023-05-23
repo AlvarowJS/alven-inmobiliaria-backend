@@ -42,4 +42,5 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('/v1/basicos', Basico::class);
     Route::apiResource('/v1/fotos', Foto::class);
     Route::post('/v1/fotos-img', [Foto::class, 'update_fotos']);
+    Route::post('/v1/registrar-cliente', [Cliente::class, 'registarCliente']);
 });

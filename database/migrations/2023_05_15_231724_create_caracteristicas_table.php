@@ -16,7 +16,9 @@ return new class extends Migration
             $table->string('mascotas');
             $table->string('espacios');
             $table->string('instalaciones');
-            $table->string('basicos');
+            $table->string('restricciones');
+            $table->string('extras');
+            $table->string('youtube');
             $table->timestamps();
         });
     }
