@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\V1\ContactoController as Contacto;
 use App\Http\Controllers\Api\V1\AsesorController as Asesor;
 use App\Http\Controllers\Api\V1\ClienteController as Cliente;
 use App\Http\Controllers\Api\V1\PropiedadController as Propiedad;
+use App\Http\Controllers\Api\V1\BasicoController as Basico;
 use App\Http\Controllers\Api\V1\FotoController as Foto;
 use App\Http\Controllers\Api\AuthController as Auth;
 /*
@@ -38,6 +39,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('/v1/asesor', Asesor::class);
     Route::apiResource('/v1/cliente', Cliente::class);
     Route::apiResource('/v1/propiedades', Propiedad::class);
+    Route::apiResource('/v1/basicos', Basico::class);
     Route::apiResource('/v1/fotos', Foto::class);
     Route::post('/v1/fotos-img', [Foto::class, 'update_fotos']);
 });

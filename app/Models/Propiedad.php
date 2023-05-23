@@ -30,6 +30,10 @@ class Propiedad extends Model
     {
         return $this->belongsTo(Direccion::class);
     }
+    public function basico()
+    {
+        return $this->belongsTo(Basico::class);
+    }
     public function cliente()
     {
         return $this->belongsTo(Cliente::class);
@@ -38,5 +42,6 @@ class Propiedad extends Model
     {
         return $this->hasMany(Foto::class);
     }
+
 
 }

@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignId('caracteristica_id')->nullable()->constrained('caracteristicas');
             $table->foreignId('publicidad_id')->nullable()->constrained('publicidads');
             $table->foreignId('cliente_id')->nullable()->constrained('clientes');
+            $table->foreignId('basico_id')->nullable()->constrained('basicos');
             $table->boolean("estado")->default(false);
             $table->timestamps();
         });

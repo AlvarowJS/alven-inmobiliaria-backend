@@ -13,7 +13,7 @@ class PropiedadController extends Controller
      */
     public function index()
     {
-        $datos = Propiedad::with('publicidad', 'caracteristica', 'general', 'direccion', 'cliente.asesor','foto')->get();
+        $datos = Propiedad::with('publicidad', 'caracteristica', 'general', 'direccion', 'cliente.asesor','foto','basico')->get();
         return response()->json($datos);
     }
 
