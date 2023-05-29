@@ -8,4 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class Caracteristica extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'mascotas',
+        'espacios',
+        'instalaciones',
+        'restricciones',
+        'extras',
+        'youtube'
+    ];
 }

@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('caracteristicas', function (Blueprint $table) {
             $table->id();
             $table->string('mascotas');
-            $table->string('espacios');
-            $table->string('instalaciones');
-            $table->string('restricciones');
-            $table->string('extras');
+            $table->json('espacios');
+            $table->json('instalaciones');
+            $table->json('restricciones');
+            $table->json('extras');
             $table->string('youtube');
             $table->timestamps();
         });

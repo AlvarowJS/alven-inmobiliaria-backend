@@ -37,7 +37,7 @@ class PropiedadController extends Controller
      */
     public function show($id)
     {
-        $datos = Propiedad::with('publicidad', 'caracteristica', 'general', 'direccion', 'cliente', 'foto')->find($id);
+        $datos = Propiedad::with('publicidad', 'caracteristica', 'general', 'direccion', 'cliente', 'foto','basico')->find($id);
         if (!$datos) {
             return response()->json(['message' => 'Registro no encontrado'], 404);
         }

@@ -20,9 +20,9 @@ return new class extends Migration
             $table->string('colonia');
             $table->string('calle');
             $table->string('numero');
-            $table->string('LAT');
-            $table->string('LON');
-            $table->string('ZOOM');
+            $table->float('LAT');
+            $table->float('LON');
+            $table->float('ZOOM');
             $table->timestamps();
         });
     }
