@@ -44,7 +44,7 @@ class CaracteristicaController extends Controller
         // $propiedad->save();
         $data = $request->all();
 
-        $mascotas = json_encode($data['mascotas']);
+        $mascotas = $data['mascotas'];
         $espacios = json_encode($data['espacios']);
         $instalaciones = json_encode($data['instalaciones']);
         $restricciones = json_encode($data['restricciones']);
@@ -103,7 +103,7 @@ class CaracteristicaController extends Controller
         // $caracteristica->extras = $request->extras;
         // $caracteristica->youtube = $request->youtube;
 
-        $caracteristica->mascotas = json_encode($data['mascotas']);
+        $caracteristica->mascotas = $data['mascotas'];
         $caracteristica->espacios = json_encode($data['espacios']);
         $caracteristica->instalaciones = json_encode($data['instalaciones']);
         $caracteristica->restricciones = json_encode($data['restricciones']);
