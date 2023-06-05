@@ -27,6 +27,16 @@ class FotoController extends Controller
         $carpeta = $request->propiedad_id;
         $ruta = public_path($carpeta);
 
+        // sacar un array de fotos
+        $fotosRepetidas = Propiedad::find($carpeta);
+        $fotosRepetidas = $fotosRepetidas->foto;
+        $dataFotos = json_decode($fotosRepetidas, true);
+        $fotosArray = array();
+        foreach ($dataFotos as $item) {
+            $fotosArray[] = $item['fotos'];
+        }
+        // EN fotos array se encuentra todos los nombres fotos referente al id de propiedad
+
 
         if (!\File::isDirectory($ruta)) {
             // $publicPath = 'storage/' . $carpeta;
@@ -44,26 +54,30 @@ class FotoController extends Controller
             $direcctorio = $carpeta;
             $rutaDirectorio = 'storage/' . $direcctorio;
 
-            $arrFiles = glob($rutaDirectorio . '/*.{png, jpg, jpeg}', GLOB_BRACE);
+            $arrFiles = glob($rutaDirectorio . '/*.{png,jpg,jpeg}', GLOB_BRACE);
 
             // $nombre = uniqid() . '.' . $files->getClientOriginalName();
             // $path = $carpeta . '/' . $nombre;
             // \Storage::disk('public')->put($path, \File::get($files));
             $respuesta = array();
+
             for ($i = 0; $i < count($arrFiles); $i++) {
-                try {
-                    $nameFile = basename($arrFiles[$i]);
+
+                $nameFile = basename($arrFiles[$i]);
+
+                if (in_array($nameFile, $fotosArray)) {
+
+                } else {
                     $fotos = new Foto([
                         'propiedad_id' => $request->propiedad_id,
                         'fotos' => $nameFile,
                     ]);
                     $fotos->save();
                     array_push($respuesta, $fotos);
-                } catch (\Throwable $th) {
-
                 }
             }
             return response()->json($respuesta);
+            // return 'guardado';
         } else {
             return "erro";
         }
@@ -76,11 +90,15 @@ class FotoController extends Controller
      */
     public function show($id)
     {
-        $datos = Foto::find($id);
-        if (!$datos) {
-            return response()->json(['message' => 'Registro no encontrado'], 404);
-        }
-        return response()->json($datos);
+        $datos = Propiedad::find($id);
+        $fotos = $datos->foto;
+        // return $fotos;
+        return response()->json($fotos);
+        // $datos = Foto::find($id);
+        // if (!$datos) {
+        //     return response()->json(['message' => 'Registro no encontrado'], 404);
+        // }
+        // return response()->json($datos);
     }
 
     /**
@@ -125,7 +143,7 @@ class FotoController extends Controller
 
         $fotoBorrar = $datos->fotos;
         $idCarpeta = $datos->propiedad_id;
-        $pathBorrar = $idCarpeta.'/'.$fotoBorrar;
+        $pathBorrar = $idCarpeta . '/' . $fotoBorrar;
         \Storage::disk('public')->delete($pathBorrar);
 
         $datos->delete();
