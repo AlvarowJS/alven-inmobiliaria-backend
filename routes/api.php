@@ -30,21 +30,34 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post('/login', [Auth::class, 'login']);
 Route::post('/register', [Auth::class, 'register']);
 
-Route::middleware('auth:sanctum')->group(function () {
-    Route::apiResource('/v1/publicidad', Publicidad::class);
-    Route::apiResource('/v1/caracteristica', Caracteristica::class);
-    Route::apiResource('/v1/general', General::class);
-    Route::apiResource('/v1/direccion', Direccion::class);
-    Route::apiResource('/v1/contacto', Contacto::class);
-    Route::apiResource('/v1/asesor', Asesor::class);
-    Route::apiResource('/v1/cliente', Cliente::class);
-    Route::apiResource('/v1/propiedades', Propiedad::class);
-    Route::apiResource('/v1/basicos', Basico::class);
-    Route::apiResource('/v1/fotos', Foto::class);
-    Route::post('/v1/fotos-img', [Foto::class, 'update_fotos']);
-    Route::post('/v1/registrar-cliente', [Cliente::class, 'registarCliente']);
-    Route::put('/v1/actualizar-propiedad/{id}', [Propiedad::class, 'actualizarEstado']);
-});
+// Route::middleware('auth:sanctum')->group(function () {
+//     Route::apiResource('/v1/publicidad', Publicidad::class);
+//     Route::apiResource('/v1/caracteristica', Caracteristica::class);
+//     Route::apiResource('/v1/general', General::class);
+//     Route::apiResource('/v1/direccion', Direccion::class);
+//     Route::apiResource('/v1/contacto', Contacto::class);
+//     Route::apiResource('/v1/asesor', Asesor::class);
+//     Route::apiResource('/v1/cliente', Cliente::class);
+//     Route::apiResource('/v1/propiedades', Propiedad::class);
+//     Route::apiResource('/v1/basicos', Basico::class);
+//     Route::apiResource('/v1/fotos', Foto::class);
+//     Route::post('/v1/fotos-img', [Foto::class, 'update_fotos']);
+//     Route::post('/v1/registrar-cliente', [Cliente::class, 'registarCliente']);
+//     Route::put('/v1/actualizar-propiedad/{id}', [Propiedad::class, 'actualizarEstado']);
+// });
+Route::apiResource('/v1/publicidad', Publicidad::class);
+Route::apiResource('/v1/caracteristica', Caracteristica::class);
+Route::apiResource('/v1/general', General::class);
+Route::apiResource('/v1/direccion', Direccion::class);
+Route::apiResource('/v1/contacto', Contacto::class);
+Route::apiResource('/v1/asesor', Asesor::class);
+Route::apiResource('/v1/cliente', Cliente::class);
+Route::apiResource('/v1/propiedades', Propiedad::class);
+Route::apiResource('/v1/basicos', Basico::class);
+Route::apiResource('/v1/fotos', Foto::class);
+Route::post('/v1/fotos-img', [Foto::class, 'update_fotos']);
+Route::post('/v1/registrar-cliente', [Cliente::class, 'registarCliente']);
+Route::put('/v1/actualizar-propiedad/{id}', [Propiedad::class, 'actualizarEstado']);
 
 Route::get('/v1/propiedades-publico', [Propiedad::class, 'index']);
 Route::get('/v1/ver-propiedad/{id}', [Propiedad::class, 'show']);
