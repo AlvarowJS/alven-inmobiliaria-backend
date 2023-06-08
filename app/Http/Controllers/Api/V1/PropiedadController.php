@@ -8,12 +8,23 @@ use Illuminate\Http\Request;
 
 class PropiedadController extends Controller
 {
+
+    public function actualizarEstado($id)
+    {
+        $propiedad = Propiedad::find($id);
+        if (!$propiedad) {
+            return response()->json(['message' => 'Registro no encontrado'], 404);
+        }
+        $propiedad->estado = true;
+        $propiedad->save();
+        return response()->json($propiedad);
+    }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $datos = Propiedad::with('publicidad', 'caracteristica', 'general', 'direccion', 'cliente.asesor','foto','basico')->get();
+        $datos = Propiedad::with('publicidad', 'caracteristica', 'general', 'direccion', 'cliente.asesor', 'foto', 'basico')->get();
         return response()->json($datos);
     }
 
@@ -37,7 +48,7 @@ class PropiedadController extends Controller
      */
     public function show($id)
     {
-        $datos = Propiedad::with('publicidad', 'caracteristica', 'general', 'direccion', 'cliente', 'foto','basico')->find($id);
+        $datos = Propiedad::with('publicidad', 'caracteristica', 'general', 'direccion', 'cliente', 'foto', 'basico')->find($id);
         if (!$datos) {
             return response()->json(['message' => 'Registro no encontrado'], 404);
         }
@@ -58,6 +69,7 @@ class PropiedadController extends Controller
         $propiedad->caracteristica_id = $request->caracteristica_id;
         $propiedad->publicidad_id = $request->publicidad_id;
         $propiedad->cliente_id = $request->cliente_id;
+        $propiedad->estado = $request->estado;
         $propiedad->save();
         return response()->json($propiedad);
     }

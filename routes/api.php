@@ -43,4 +43,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('/v1/fotos', Foto::class);
     Route::post('/v1/fotos-img', [Foto::class, 'update_fotos']);
     Route::post('/v1/registrar-cliente', [Cliente::class, 'registarCliente']);
+    Route::put('/v1/actualizar-propiedad/{id}', [Propiedad::class, 'actualizarEstado']);
 });
+
+Route::get('/v1/propiedades-publico', [Propiedad::class, 'index']);
+Route::get('/v1/ver-propiedad/{id}', [Propiedad::class, 'show']);
+Route::post('/v1/contacto-register', [Contacto::class, 'store']);
