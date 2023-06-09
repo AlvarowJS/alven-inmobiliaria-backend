@@ -9,6 +9,20 @@ use Illuminate\Http\Request;
 
 class ClienteController extends Controller
 {
+    public function registarIdCliente(Request $request, $id)
+    {
+        $propiedad = Propiedad::find($id);
+        $propiedad->cliente_id = $id;
+        if (!$propiedad) {
+            return response()->json(['message' => 'Registro no encontrado'], 404);
+        }
+        $propiedad->cliente_id = $request->cliente_id;
+        $propiedad->save();
+        return response()->json($propiedad);
+        // $propiedad->save();
+        // return response()->json($propiedad);
+    }
+
     public function registarCliente(Request $request)
     {
         $cliente = new Cliente;
@@ -20,7 +34,7 @@ class ClienteController extends Controller
         $cliente->email = $request->email;
         $cliente->celular = $request->celular;
         $cliente->medio_contacto = $request->medio_contacto;
-        $cliente->save();   
+        $cliente->save();
         return response()->json($cliente);
         // return response()->json($cliente);
     }
