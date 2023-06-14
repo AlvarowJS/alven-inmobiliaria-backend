@@ -47,6 +47,7 @@ Route::put('/v1/cliente-id/{id}', [Cliente::class, 'registarIdCliente']);
 Route::post('/v1/fotos-img', [Foto::class, 'update_fotos']);
 Route::post('/v1/registrar-cliente', [Cliente::class, 'registarCliente']);
 Route::put('/v1/actualizar-propiedad/{id}', [Propiedad::class, 'actualizarEstado']);
+Route::put('/v1/estado-propiedad/{id}', [Propiedad::class, 'cambiarEstado']);
 // });
 
 Route::get('/v1/propiedades-publico', [Propiedad::class, 'index']);

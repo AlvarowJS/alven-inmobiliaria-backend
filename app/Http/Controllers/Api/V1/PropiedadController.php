@@ -9,6 +9,16 @@ use Illuminate\Http\Request;
 class PropiedadController extends Controller
 {
 
+    public function cambiarEstado(Request $request, $id)
+    {
+        $propiedad = Propiedad::find($id);
+        if (!$propiedad) {
+            return response()->json(['message' => 'Registro no encontrado'], 404);
+        }
+        $propiedad->estado = $request->estado;
+        $propiedad->save();
+        return response()->json($propiedad);
+    }
     public function actualizarEstado($id)
     {
         $propiedad = Propiedad::find($id);
@@ -24,7 +34,9 @@ class PropiedadController extends Controller
      */
     public function index()
     {
-        $datos = Propiedad::with('publicidad', 'caracteristica', 'general', 'direccion', 'cliente.asesor', 'foto', 'basico')->get();
+        $datos = Propiedad::with('publicidad', 'caracteristica', 'general', 'direccion', 'cliente.asesor', 'foto', 'basico')
+            ->orderBy('updated_at', 'desc')
+            ->get();
         return response()->json($datos);
     }
 
