@@ -4,7 +4,10 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Models\Asesor;
+use App\Models\Cliente;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+
 
 class AsesorController extends Controller
 {
@@ -67,11 +70,37 @@ class AsesorController extends Controller
      */
     public function destroy($id)
     {
-        $datos = Asesor::find($id);
-        if (!$datos) {
-            return response()->json(['message' => 'Registro no encontrado'], 404);
+        // $datos = Asesor::find($id);
+        // if (!$datos) {
+        //     return response()->json(['message' => 'Registro no encontrado'], 404);
+        // }
+        // $datos->delete();
+        // return response()->json(['message' => 'Registro eliminado']);
+// Buscar el asesor por su ID
+        $asesor = Asesor::findOrFail($id);
+
+        // Iniciar una transacción de la base de datos
+        DB::beginTransaction();
+
+        try {
+            // Actualizar el ID del asesor a null en los clientes relacionados
+            Cliente::where('asesor_id', $id)->update(['asesor_id' => null]);
+
+            // Eliminar el asesor
+            $asesor->delete();
+
+            // Confirmar la transacción
+            DB::commit();
+
+            // Retornar una respuesta exitosa
+            return response()->json(['message' => 'Asesor eliminado exitosamente']);
+        } catch (\Exception $e) {
+            // Revertir la transacción en caso de error
+            DB::rollback();
+
+            // Retornar una respuesta de error
+            return response()->json(['message' => 'Error al eliminar el asesor'], 500);
         }
-        $datos->delete();
-        return response()->json(['message' => 'Registro eliminado']);
+
     }
 }

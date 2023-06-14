@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Cliente;
 use App\Models\Propiedad;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\DB;
 class ClienteController extends Controller
 {
     public function registarIdCliente(Request $request, $id)
@@ -113,11 +113,35 @@ class ClienteController extends Controller
      */
     public function destroy($id)
     {
-        $datos = Cliente::find($id);
-        if (!$datos) {
-            return response()->json(['message' => 'Registro no encontrado'], 404);
+        // $datos = Cliente::find($id);
+        // if (!$datos) {
+        //     return response()->json(['message' => 'Registro no encontrado'], 404);
+        // }
+        // $datos->delete();
+        // return response()->json(['message' => 'Registro eliminado']);
+        $cliente = Cliente::findOrFail($id);
+
+        // Iniciar una transacción de la base de datos
+        DB::beginTransaction();
+
+        try {
+            // Actualizar el ID del cliente a null en los clientes relacionados
+            Propiedad::where('cliente_id', $id)->update(['cliente_id' => null]);
+
+            // Eliminar el cliente
+            $cliente->delete();
+
+            // Confirmar la transacción
+            DB::commit();
+
+            // Retornar una respuesta exitosa
+            return response()->json(['message' => 'Cliente eliminado exitosamente']);
+        } catch (\Exception $e) {
+            // Revertir la transacción en caso de error
+            DB::rollback();
+
+            // Retornar una respuesta de error
+            return response()->json(['message' => 'Error al eliminar el cliente'], 500);
         }
-        $datos->delete();
-        return response()->json(['message' => 'Registro eliminado']);
     }
 }
