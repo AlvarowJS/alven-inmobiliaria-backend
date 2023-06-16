@@ -5,10 +5,32 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Models\Propiedad;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
+
 
 class PropiedadController extends Controller
 {
+    public function indexTrue()
+    {
+        $datos = Propiedad::with('publicidad', 'caracteristica', 'general', 'direccion', 'cliente.asesor', 'foto', 'basico')
+            ->where('estado', true)
+            ->orderBy('updated_at', 'desc')
+            ->get();
+        return response()->json($datos);
+    }
+    public function exportarPdf($id)
+    {
+        $propiedades = Propiedad::with('publicidad', 'caracteristica', 'general', 'direccion', 'cliente', 'foto', 'basico')->find($id);
 
+        $pdf = Pdf::loadView('pdf.template', compact('propiedades'))
+            ->setPaper('a4', 'portrait');
+
+
+        return $pdf->download('documento.pdf');
+
+
+
+    }
     public function cambiarEstado(Request $request, $id)
     {
         $propiedad = Propiedad::find($id);
