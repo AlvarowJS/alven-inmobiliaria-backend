@@ -39,6 +39,7 @@ class DireccionController extends Controller
         $direccion->LAT = $request->LAT;
         $direccion->LON = $request->LON;
         $direccion->ZOOM = $request->ZOOM;
+        $direccion->numero_interior = $request->numero_interior;
         $direccion->save();
 
         $id = $direccion->id;
@@ -83,6 +84,7 @@ class DireccionController extends Controller
         $direccion->LAT = $request->LAT;
         $direccion->LON = $request->LON;
         $direccion->ZOOM = $request->ZOOM;
+        $direccion->numero_interior = $request->numero_interior;
         $direccion->save();
         return response()->json($direccion);
     }

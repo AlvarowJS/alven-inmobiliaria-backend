@@ -103,7 +103,7 @@ class ClienteController extends Controller
         $cliente->cedula = $request->cedula;
         $cliente->email = $request->email;
         $cliente->celular = $request->celular;
-        $cliente->medio_contacto = $request->medio_contacto;
+        $cliente->tipo_cliente = $request->tipo_cliente;
         $cliente->save();
         return response()->json($cliente);
     }

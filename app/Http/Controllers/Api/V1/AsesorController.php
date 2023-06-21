@@ -25,14 +25,40 @@ class AsesorController extends Controller
      */
     public function store(Request $request)
     {
-        $asesor = new Asesor;
-        $asesor->nombre = $request->nombre;
-        $asesor->apellidos = $request->apellidos;
-        $asesor->cedula = $request->cedula;
-        $asesor->email = $request->email;
-        $asesor->celular = $request->celular;
-        $asesor->save();
-        return response()->json($asesor);
+
+        $carpeta = "asesor";
+        $ruta = public_path($carpeta);
+        if (!\File::isDirectory($ruta)) {
+            // $publicPath = 'storage/' . $carpeta;
+            $publicPath = 'storage/' . $carpeta;
+            \File::makeDirectory($publicPath, 0777, true, true);
+        }
+        $files = $request->file('foto');
+
+        if ($request->hasFile('foto')) {
+
+            $nombre = uniqid() . '.' . $files->getClientOriginalName();
+            $path = $carpeta . '/' . $nombre;
+            \Storage::disk('public')->put($path, \File::get($files));
+
+            $asesor = new Asesor;
+            $asesor->nombre = $request->nombre;
+            $asesor->apellidos = $request->apellidos;
+            $asesor->rfc = $request->rfc;
+            $asesor->direccion = $request->direccion;
+            $asesor->email = $request->email;
+            $asesor->celular = $request->celular;
+            $asesor->foto = $nombre;
+            $asesor->contacto_emergencia = $request->contacto_emergencia;
+            $asesor->save();
+
+            return response()->json($asesor);
+
+        } else {
+            return "error";
+        }
+
+
     }
 
     /**
@@ -58,9 +84,40 @@ class AsesorController extends Controller
         }
         $asesor->nombre = $request->nombre;
         $asesor->apellidos = $request->apellidos;
-        $asesor->cedula = $request->cedula;
+        $asesor->rfc = $request->rfc;
+        $asesor->direccion = $request->direccion;
         $asesor->email = $request->email;
         $asesor->celular = $request->celular;
+        $asesor->contacto_emergencia = $request->contacto_emergencia;
+        $asesor->save();
+        return response()->json($asesor);
+    }
+
+    public function update_fotos(Request $request)
+    {
+        $carpeta = "asesor";
+        $id = $request->id;
+        $asesor = Asesor::find($id);
+        if (!$asesor) {
+            return response()->json(['message' => 'Registro no encontrado'], 404);
+        }
+
+        $nombreArchivo = $asesor->foto;
+        $files = $request->file('foto');
+
+        \Storage::disk('public')->delete($carpeta . '/' . $nombreArchivo);
+        $nombreNuevo = uniqid() . '.' . $files->getClientOriginalName();
+        $pathNuevo = $carpeta . '/' . $nombreNuevo;
+        \Storage::disk('public')->put($pathNuevo, \File::get($files));
+
+        $asesor->nombre = $request->nombre;
+        $asesor->apellidos = $request->apellidos;
+        $asesor->rfc = $request->rfc;
+        $asesor->direccion = $request->direccion;
+        $asesor->email = $request->email;
+        $asesor->celular = $request->celular;
+        $asesor->foto = $nombreNuevo;
+        $asesor->contacto_emergencia = $request->contacto_emergencia;
         $asesor->save();
         return response()->json($asesor);
     }
@@ -68,16 +125,20 @@ class AsesorController extends Controller
     /**
      * Remove the specified resource from storage.
      */
+
     public function destroy($id)
     {
-        // $datos = Asesor::find($id);
-        // if (!$datos) {
-        //     return response()->json(['message' => 'Registro no encontrado'], 404);
-        // }
-        // $datos->delete();
-        // return response()->json(['message' => 'Registro eliminado']);
-// Buscar el asesor por su ID
+
         $asesor = Asesor::findOrFail($id);
+
+        if (!$asesor) {
+            return response()->json(['message' => 'Registro no encontrado'], 404);
+        }
+
+        $fotoBorrar = $asesor->foto;
+        $carpeta = 'asesor';
+        $pathBorrar = $carpeta . '/' . $fotoBorrar;
+        \Storage::disk('public')->delete($pathBorrar);
 
         // Iniciar una transacción de la base de datos
         DB::beginTransaction();
