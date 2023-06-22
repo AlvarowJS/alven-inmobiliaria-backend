@@ -12,6 +12,7 @@ use App\Http\Controllers\Api\V1\ClienteController as Cliente;
 use App\Http\Controllers\Api\V1\PropiedadController as Propiedad;
 use App\Http\Controllers\Api\V1\BasicoController as Basico;
 use App\Http\Controllers\Api\V1\FotoController as Foto;
+use App\Http\Controllers\Api\V1\MedioController as Medio;
 use App\Http\Controllers\Api\AuthController as Auth;
 
 /*
@@ -41,6 +42,7 @@ Route::apiResource('/v1/asesor', Asesor::class);
 Route::apiResource('/v1/cliente', Cliente::class);
 Route::apiResource('/v1/propiedades', Propiedad::class);
 Route::apiResource('/v1/basicos', Basico::class);
+Route::apiResource('/v1/medios', Medio::class);
 Route::apiResource('/v1/fotos', Foto::class);
 
 Route::put('/v1/cliente-id/{id}', [Cliente::class, 'registarIdCliente']);
@@ -55,3 +57,4 @@ Route::get('/v1/exportar-propiedad/{id}', [Propiedad::class, 'exportarPDF']);
 Route::get('/v1/ver-propiedad/{id}', [Propiedad::class, 'show']);
 Route::post('/v1/contacto-register', [Contacto::class, 'store']);
 Route::post('/v1/asesor-foto', [Asesor::class, 'update_fotos']);
+Route::post('/v1/ordernar-fotos', [Foto::class, 'ordenar']);

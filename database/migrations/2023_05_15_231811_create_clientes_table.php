@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string("cedula");
             $table->string("email");
             $table->string("celular");
+            $table->string("tipo_cliente");
             $table->string("medio_contacto");
             $table->timestamps();
         });

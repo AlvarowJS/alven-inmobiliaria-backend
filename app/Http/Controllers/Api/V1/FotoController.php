@@ -9,12 +9,29 @@ use Illuminate\Http\Request;
 
 class FotoController extends Controller
 {
+    public function ordenar(Request $request)
+    {
+        $datos = $request->json()->all();
+        foreach ($datos as $dato) {
+            $id = $dato['id'];
+            $orden = $dato['orden'];
+
+            $foto = Foto::find($id);
+            $foto->orden = $orden;
+            $foto->save();
+
+        }
+        $data = Foto::orderBy('orden')->get();
+        return response()->json($data);
+
+    }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $datos = Foto::all();
+        // $datos = Foto::all();
+        $datos = Foto::orderBy('orden')->get();
         return response()->json($datos);
     }
 

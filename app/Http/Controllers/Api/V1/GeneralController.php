@@ -28,13 +28,13 @@ class GeneralController extends Controller
         $general->fecha_alta = $request->fecha_alta;
         $general->tipo_operacion = $request->tipo_operacion;
         $general->tipo_propiedad = $request->tipo_propiedad;
+        $general->sub_tipo_propiedad = $request->sub_tipo_propiedad;
         $general->tipo_contrato = $request->tipo_contrato;
         $general->asesor_exclusivo = $request->asesor_exclusivo;
-        $general->porcentaje = $request->porcentaje;
+        // $general->porcentaje = $request->porcentaje;
+        $general->operacion = $request->operacion;
         $general->aceptar_creditos = $request->aceptar_creditos;
-        $general->fecha_credito = $request->fecha_credito;
-        $general->fecha_inicio = $request->fecha_inicio;
-        $general->duracion_dias = $request->duracion_dias;
+        // $general->duracion_dias = $request->duracion_dias;
         $general->requisito_arrendamiento = $request->requisito_arrendamiento;
         $general->save();
 
@@ -73,13 +73,14 @@ class GeneralController extends Controller
         $general->fecha_alta = $request->fecha_alta;
         $general->tipo_operacion = $request->tipo_operacion;
         $general->tipo_propiedad = $request->tipo_propiedad;
+        $general->sub_tipo_propiedad = $request->sub_tipo_propiedad;
         $general->tipo_contrato = $request->tipo_contrato;
         $general->asesor_exclusivo = $request->asesor_exclusivo;
-        $general->porcentaje = $request->porcentaje;
+        $general->operacion = $request->operacion;
+        // $general->porcentaje = $request->porcentaje;
         $general->aceptar_creditos = $request->aceptar_creditos;
-        $general->fecha_credito = $request->fecha_credito;
-        $general->fecha_inicio = $request->fecha_inicio;
-        $general->duracion_dias = $request->duracion_dias;
+
+        // $general->duracion_dias = $request->duracion_dias;
         $general->requisito_arrendamiento = $request->requisito_arrendamiento;
         $general->save();
         return response()->json($general);

@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('propiedad_id')->nullable()->constrained('propiedads');
             $table->string('fotos');
+            $table->integer('orden')->nullable();
             $table->timestamps();
         });
     }
