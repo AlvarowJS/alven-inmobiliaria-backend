@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('tipo_propiedad');
             $table->string('sub_tipo_propiedad');
             $table->string('tipo_contrato');
-            $table->string('asesor_exclusivo');
+            $table->string('asesor_exclusivo')->nullable();
             $table->string('aceptar_creditos');
             // $table->date('fecha_credito');
             // $table->date('fecha_inicio');
