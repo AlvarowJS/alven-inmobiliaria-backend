@@ -32,6 +32,7 @@ class PublicidadController extends Controller
         $publicidad->encabezado = $request->encabezado;
         $publicidad->descripcion = $request->descripcion;
         $publicidad->video_url = $request->video_url;
+        $publicidad->estado = $request->estado;
         $publicidad->save();
 
         $id = $publicidad->id;
@@ -64,10 +65,11 @@ class PublicidadController extends Controller
         if (!$datos) {
             return response()->json(['message' => 'Registro no encontrado'], 404);
         }
-        $datos->precio_venta = $request->input('precio_venta');
-        $datos->encabezado = $request->input('encabezado');
-        $datos->descripcion = $request->input('descripcion');
-        $datos->video_url = $request->input('video_url');
+        $datos->precio_venta = $request->precio_venta;
+        $datos->encabezado = $request->encabezado;
+        $datos->descripcion = $request->descripcion;
+        $datos->video_url = $request->video_url;
+        $datos->estado = $request->estado;
         $datos->save();
         return response()->json($datos);
     }

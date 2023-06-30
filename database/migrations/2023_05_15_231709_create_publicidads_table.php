@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('encabezado')->nullable();
             $table->text('descripcion')->nullable();
             $table->string('video_url')->nullable();
+            $table->string('estado')->nullable();
             $table->timestamps();
         });
     }

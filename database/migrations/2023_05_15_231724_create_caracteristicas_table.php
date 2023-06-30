@@ -13,12 +13,12 @@ return new class extends Migration
     {
         Schema::create('caracteristicas', function (Blueprint $table) {
             $table->id();
-            $table->string('mascotas');
-            $table->json('espacios');
-            $table->json('instalaciones');
-            $table->json('restricciones');
-            $table->json('extras');
-            $table->string('youtube');
+            $table->string('mascotas')->nullable();
+            $table->json('espacios')->nullable();
+            $table->json('instalaciones')->nullable();
+            $table->json('restricciones')->nullable();
+            $table->json('extras')->nullable();
+            $table->string('youtube')->nullable();
             $table->timestamps();
         });
     }

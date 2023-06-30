@@ -10,13 +10,27 @@ use Barryvdh\DomPDF\Facade\Pdf;
 
 class PropiedadController extends Controller
 {
-    public function indexTrue()
+    public function filtrarStatus(Request $request)
     {
+        $estadoActual = $request->estado;
         $datos = Propiedad::with('publicidad', 'caracteristica', 'general', 'direccion', 'cliente.asesor', 'foto', 'basico')
-            ->where('estado', true)
+            ->whereHas('publicidad', function ($query) use ($estadoActual) {
+                $query->where('estado', $estadoActual);
+            })
             ->orderBy('updated_at', 'desc')
             ->get();
         return response()->json($datos);
+    }
+    public function indexTrue()
+    {
+        $datos = Propiedad::with('publicidad', 'caracteristica', 'general', 'direccion', 'cliente.asesor', 'foto', 'basico')
+            ->whereHas('publicidad', function ($query) {
+                $query->where('estado', 'En Promocion');
+            })
+            ->orderBy('updated_at', 'desc')
+            ->get();
+        return response()->json($datos);
+
     }
     public function exportarPdf($id)
     {
@@ -59,6 +73,8 @@ class PropiedadController extends Controller
         $datos = Propiedad::with('publicidad', 'caracteristica', 'general', 'direccion', 'cliente.asesor', 'foto', 'basico')
             ->orderBy('updated_at', 'desc')
             ->get();
+
+
         return response()->json($datos);
     }
 

@@ -174,7 +174,10 @@
                 {{-- </td> --}}
             </tr>
         </table>
-        <img class="primera-img" src="{{ public_path('storage/'.$propiedades->id.'/'.$propiedades->foto[0]->fotos) }}" alt="Foto" >
+        @if(count($propiedades->foto) > 0)
+            <img class="primera-img" src="{{ public_path('storage/'.$propiedades->id.'/'.$propiedades->foto[0]->fotos) }}" alt="Foto" >
+        @endif
+
         <h2 style="margin-top: 80px; margin-bottom: 0">Básicos</h2>
         <div style="overflow: auto; ">
             <div style="float: left; width: 40%;">

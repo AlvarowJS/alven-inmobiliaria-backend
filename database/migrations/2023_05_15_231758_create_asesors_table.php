@@ -13,14 +13,16 @@ return new class extends Migration
     {
         Schema::create('asesors', function (Blueprint $table) {
             $table->id();
-            $table->string("nombre");
-            $table->string("apellidos");
-            $table->string("rfc");
-            $table->string("direccion");
-            $table->string("email");
-            $table->string("celular");
-            $table->string("contacto_emergencia");
-            $table->string('foto');
+            $table->string("nombre")->nullable();
+            $table->string("apellidos")->nullable();
+            $table->string("rfc")->nullable();
+            $table->string("direccion")->nullable();
+            $table->string("email")->nullable();
+            $table->string("celular")->nullable();
+            $table->string("contacto_emergencia")->nullable();
+            $table->string('foto')->nullable();
+            $table->string('status')->nullable();
+            $table->boolean('publico')->nullable();
             $table->timestamps();
         });
     }

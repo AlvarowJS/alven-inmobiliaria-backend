@@ -9,6 +9,14 @@ use Illuminate\Http\Request;
 
 class GeneralController extends Controller
 {
+    public function generarId()
+    {
+        $datos = General::all();
+        $datos = count($datos);
+        $datos = str_pad($datos+1, 5, '0', STR_PAD_LEFT);
+
+        return $datos;
+    }
     /**
      * Display a listing of the resource.
      */

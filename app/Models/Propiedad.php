@@ -40,7 +40,7 @@ class Propiedad extends Model
     }
     public function foto()
     {
-        return $this->hasMany(Foto::class);
+        return $this->hasMany(Foto::class)->orderBy('orden');
     }
 
 

@@ -13,20 +13,20 @@ return new class extends Migration
     {
         Schema::create('generals', function (Blueprint $table) {
             $table->id();
-            $table->string('numero_ofna');
-            $table->date('fecha_alta');
-            $table->string('tipo_operacion');
-            $table->string('tipo_propiedad');
-            $table->string('sub_tipo_propiedad');
-            $table->string('tipo_contrato');
-            $table->string('asesor_exclusivo')->nullable();
-            $table->string('aceptar_creditos');
+            $table->string('numero_ofna')->nullable();
+            $table->date('fecha_alta')->nullable();
+            $table->string('tipo_operacion')->nullable();
+            $table->string('tipo_propiedad')->nullable();
+            $table->string('sub_tipo_propiedad')->nullable();
+            $table->string('tipo_contrato')->nullable();
+            $table->string('asesor_exclusivo')->nullable()->nullable();
+            $table->string('aceptar_creditos')->nullable();
             // $table->date('fecha_credito');
             // $table->date('fecha_inicio');
-            $table->string('operacion');
-            // $table->string('porcentaje');
-            // $table->string('duracion_dias');
-            $table->string('requisito_arrendamiento');
+            $table->string('operacion')->nullable();
+            // $table->string('porcentaje')->nullable();
+            // $table->string('duracion_dias')->nullable();
+            $table->string('requisito_arrendamiento')->nullable();
             $table->timestamps();
         });
     }

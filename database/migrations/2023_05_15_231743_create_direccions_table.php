@@ -14,17 +14,17 @@ return new class extends Migration
         Schema::create('direccions', function (Blueprint $table) {
             $table->id();
             $table->foreignId('medio_id')->nullable()->constrained('medios');
-            $table->string('pais');
-            $table->string('codigo_postal');
-            $table->string('estado');
-            $table->string('municipio');
-            $table->string('colonia');
-            $table->string('calle');
-            $table->string('numero');
+            $table->string('pais')->nullable();
+            $table->string('codigo_postal')->nullable();
+            $table->string('estado')->nullable();
+            $table->string('municipio')->nullable();
+            $table->string('colonia')->nullable();
+            $table->string('calle')->nullable();
+            $table->string('numero')->nullable();
             $table->string('numero_interior')->nullable();
-            $table->float('LAT');
-            $table->float('LON');
-            $table->float('ZOOM');
+            $table->float('LAT')->nullable();
+            $table->float('LON')->nullable();
+            $table->float('ZOOM')->nullable();
             $table->timestamps();
         });
     }

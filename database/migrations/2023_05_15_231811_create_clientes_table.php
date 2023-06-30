@@ -14,13 +14,13 @@ return new class extends Migration
         Schema::create('clientes', function (Blueprint $table) {
             $table->id();
             $table->foreignId('asesor_id')->nullable()->constrained('asesors');
-            $table->string("nombre");
-            $table->string("apellido_materno");
-            $table->string("apellido_paterno");
-            $table->string("cedula");
-            $table->string("email");
-            $table->string("celular");
-            $table->string("tipo_cliente");
+            $table->string("nombre")->nullable();
+            $table->string("apellido_materno")->nullable();
+            $table->string("apellido_paterno")->nullable();
+            $table->string("cedula")->nullable();
+            $table->string("email")->nullable();
+            $table->string("celular")->nullable();
+            $table->string("tipo_cliente")->nullable();
             $table->string("medio_contacto")->nullable();
             $table->timestamps();
         });

@@ -13,18 +13,18 @@ return new class extends Migration
     {
         Schema::create('basicos', function (Blueprint $table) {
             $table->id();
-            $table->string('superficie_terreno');
-            $table->string('superficie_construccion');
-            $table->string('banios');
-            $table->string('medios_banios');
-            $table->string('recamaras');
-            $table->string('cocina');
-            $table->string('estacionamiento');
-            $table->string('niveles_construidos');
-            $table->string('cuota_mantenimiento');
-            $table->string('numero_casas');
-            $table->string('numero_elevadores');
-            $table->string('piso_ubicado');
+            $table->string('superficie_terreno')->nullable();
+            $table->string('superficie_construccion')->nullable();
+            $table->string('banios')->nullable();
+            $table->string('medios_banios')->nullable();
+            $table->string('recamaras')->nullable();
+            $table->string('cocina')->nullable();
+            $table->string('estacionamiento')->nullable();
+            $table->string('niveles_construidos')->nullable();
+            $table->string('cuota_mantenimiento')->nullable();
+            $table->string('numero_casas')->nullable();
+            $table->string('numero_elevadores')->nullable();
+            $table->string('piso_ubicado')->nullable();
             $table->timestamps();
         });
     }

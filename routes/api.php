@@ -57,4 +57,8 @@ Route::get('/v1/exportar-propiedad/{id}', [Propiedad::class, 'exportarPDF']);
 Route::get('/v1/ver-propiedad/{id}', [Propiedad::class, 'show']);
 Route::post('/v1/contacto-register', [Contacto::class, 'store']);
 Route::post('/v1/asesor-foto', [Asesor::class, 'update_fotos']);
+Route::get('/v1/asesor-publico', [Asesor::class, 'indexPublic']);
 Route::post('/v1/ordernar-fotos', [Foto::class, 'ordenar']);
+
+Route::get('/v1/general-id', [General::class, 'generarId']);
+Route::post('/v1/propiedad-filtrado', [Propiedad::class, 'filtrarStatus']);
