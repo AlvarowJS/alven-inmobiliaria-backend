@@ -96,9 +96,15 @@
                     @if (!empty($propiedades->caracteristica->espacios))
                         @php
                             $espacios = json_decode($propiedades->caracteristica->espacios);
-                            $totalEspacios = count($espacios);
-                            $columna1Espacio = array_slice($espacios, 0, ceil($totalEspacios / 2));
-                            $columna2Espacio = array_slice($espacios, ceil($totalEspacios / 2));
+                            if (is_array($espacios)) {
+                                $totalEspacios = count($espacios);
+                                $columna1Espacio = array_slice($espacios, 0, ceil($totalEspacios / 2));
+                                $columna2Espacio = array_slice($espacios, ceil($totalEspacios / 2));
+                            } else {
+                                $totalEspacios = 0;
+                                $columna1Espacio = [];
+                                $columna2Espacio = [];
+                            }
                         @endphp
                         <div style="overflow: auto;">
                                 <div style="float: left; width: 50%;">
@@ -118,10 +124,18 @@
                     <h2>Instalaciones:</h2>
                     @if (!empty($propiedades->caracteristica->instalaciones))
                     @php
-                    $instalaciones = json_decode($propiedades->caracteristica->instalaciones);
-                    $totalInstalaciones = count($instalaciones);
-                    $columna1Instalacion = array_slice($instalaciones, 0, ceil($totalInstalaciones / 2));
-                    $columna2Instalacion = array_slice($instalaciones, ceil($totalInstalaciones / 2));
+                       $instalaciones = json_decode($propiedades->caracteristica->instalaciones);
+
+                        // Verificar si $instalaciones es un array antes de contar los elementos
+                        if (is_array($instalaciones)) {
+                            $totalInstalaciones = count($instalaciones);
+                            $columna1Instalacion = array_slice($instalaciones, 0, ceil($totalInstalaciones / 2));
+                            $columna2Instalacion = array_slice($instalaciones, ceil($totalInstalaciones / 2));
+                        } else {
+                            $totalInstalaciones = 0;
+                            $columna1Instalacion = [];
+                            $columna2Instalacion = [];
+                        }
                     @endphp
 
                     <div style="overflow: auto;">
@@ -142,10 +156,18 @@
                     <h2>Restricciones:</h2>
                     @if (!empty($propiedades->caracteristica->restricciones))
                     @php
-                    $restricciones = json_decode($propiedades->caracteristica->restricciones);
-                    $totalRestricciones = count($restricciones);
-                    $columna1Restricciones = array_slice($restricciones, 0, ceil($totalRestricciones / 2));
-                    $columna2Restricciones = array_slice($restricciones, ceil($totalRestricciones / 2));
+                  $restricciones = json_decode($propiedades->caracteristica->restricciones);
+
+                    // Verificar si $restricciones es un array antes de contar los elementos
+                    if (is_array($restricciones)) {
+                        $totalRestricciones = count($restricciones);
+                        $columna1Restricciones = array_slice($restricciones, 0, ceil($totalRestricciones / 2));
+                        $columna2Restricciones = array_slice($restricciones, ceil($totalRestricciones / 2));
+                    } else {
+                        $totalRestricciones = 0;
+                        $columna1Restricciones = [];
+                        $columna2Restricciones = [];
+                    }
                     @endphp
 
                     <div style="overflow: auto;">
