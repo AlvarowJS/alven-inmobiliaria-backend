@@ -25,13 +25,13 @@
         }
 
         .primera-img {
+
             width: 300px;
             height: auto;
             position: absolute;
-            top: 180px;
+            top: 30%;
             right: 0;
             z-index: 9999;
-            /* margin-top: 50px; */
         }
 
         .secundarias-img {
@@ -97,7 +97,9 @@
             <tr class="basicos">
                 <td class="caracteristicas">
                     <div style="overflow: auto; width: 50%;">
-                        Precio: {{ $propiedades->publicidad->precio_venta ?? '' }}
+                        {{-- Precio: {{ $propiedades->publicidad->precio_venta ?? '' }} --}}
+                        Precio: ${{ number_format($propiedades->publicidad->precio_venta ?? 0, 2, ',', '.') }}
+
                         <p>{{ $propiedades->publicidad->descripcion ?? '' }}</p>
                         <p>Con las siguientes caracteristicas</p>
                         <p>Mascotas: {{ $propiedades->caracteristica->mascotas ?? '' }}</p>
@@ -215,7 +217,7 @@
                 alt="Foto">
         @endif
 
-        <h2 style="margin-top: 80px; margin-bottom: 0">Básicos</h2>
+        <h2 style="margin-bottom: 0">Básicos</h2>
         <div style="overflow: auto; ">
             <div style="float: left; width: 40%;">
                 <p>Superficie del terreno: {{ $propiedades->basico->superficie_terreno ?? '' }}</p>
