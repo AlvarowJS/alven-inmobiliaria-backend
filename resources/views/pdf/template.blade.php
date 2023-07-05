@@ -96,7 +96,7 @@
         <table class="datos-propiedad">
             <tr class="basicos">
                 <td class="caracteristicas">
-                    <div style="overflow: auto; width: 70%;">
+                    <div style="overflow: auto; width: 50%;">
                         Precio: {{ $propiedades->publicidad->precio_venta ?? '' }}
                         <p>{{ $propiedades->publicidad->descripcion ?? '' }}</p>
                         <p>Con las siguientes caracteristicas</p>
