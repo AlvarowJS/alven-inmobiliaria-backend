@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 
 
@@ -22,7 +23,8 @@
             width: 100px;
             height: 70px;
         }
-        .primera-img{
+
+        .primera-img {
             width: 300px;
             height: auto;
             position: absolute;
@@ -32,11 +34,12 @@
             /* margin-top: 50px; */
         }
 
-        .secundarias-img{
+        .secundarias-img {
             width: 140px;
             height: 140px;
 
         }
+
         .header {
             text-align: center;
             /* margin-bottom: 20px; */
@@ -54,45 +57,51 @@
             margin: 10px;
             box-shadow: 0 0 5px rgba(0, 0, 0, 1);
         } */
-        .caracteristicas{
+        .caracteristicas {
             width: 50%;
         }
-        li{
+
+        li {
             margin-left: 30px
         }
-        p{
+
+        p {
             margin-bottom: 4px;
             margin-top: 0;
         }
-        .espacios{
+
+        .espacios {
             width: 300px;
 
         }
-
-
     </style>
 
 
 </head>
+
 <body>
     <div class="container">
         <div class="header">
             <div class="header">
-                <h1 style="display: inline-block; margin-right: 90px">{{ $propiedades->publicidad->encabezado ?? '' }}</h1>
-                <img src="{{ public_path('images/logo.png') }}" class="logo" alt="Logo" style="display: inline-block;">
+                <h1 style="display: inline-block; margin-right: 90px">{{ $propiedades->publicidad->encabezado ?? '' }}
+                </h1>
+                <img src="{{ public_path('images/logo.png') }}" class="logo" alt="Logo"
+                    style="display: inline-block;">
             </div>
         </div>
         <div style="text-align: right; margin-bottom: 0;">
-        {{ $propiedades->direccion->calle ?? '' }}  {{ $propiedades->direccion->numero ?? ''}} - {{ $propiedades->direccion->municipio ?? ''}} - {{ $propiedades->direccion->estado ?? ''}}
+            {{ $propiedades->direccion->calle ?? '' }} {{ $propiedades->direccion->numero ?? '' }} -
+            {{ $propiedades->direccion->municipio ?? '' }} - {{ $propiedades->direccion->estado ?? '' }}
         </div>
         <table class="datos-propiedad">
             <tr class="basicos">
                 <td class="caracteristicas">
-                    Precio: {{ $propiedades->publicidad->precio_venta ?? ''}}
-                    <p>{{ $propiedades->publicidad->descripcion ?? '' }}</p>
-                    <p>Con las siguientes caracteristicas</p>
-                    <p>Mascotas: {{ $propiedades->caracteristica->mascotas ?? ''}}</p>
-                    <h2>Espacios:</h2>
+                    <div style="overflow: auto; width: 70%;">
+                        Precio: {{ $propiedades->publicidad->precio_venta ?? '' }}
+                        <p>{{ $propiedades->publicidad->descripcion ?? '' }}</p>
+                        <p>Con las siguientes caracteristicas</p>
+                        <p>Mascotas: {{ $propiedades->caracteristica->mascotas ?? '' }}</p>
+                    </div>
                     @if (!empty($propiedades->caracteristica->espacios))
                         @php
                             $espacios = json_decode($propiedades->caracteristica->espacios);
@@ -106,89 +115,93 @@
                                 $columna2Espacio = [];
                             }
                         @endphp
-                        <div style="overflow: auto;">
-                                <div style="float: left; width: 50%;">
-                                    @foreach ($columna1Espacio as $espacio)
-                                        <li>{{ $espacio }}</li>
-                                    @endforeach
-                                </div>
-                                <div style="float: left; width: 50%;">
-                                    @foreach ($columna2Espacio as $espacio)
-                                        <li>{{ $espacio }}</li>
-                                    @endforeach
-                                </div>
+                        <h2>Espacios:</h2>
+
+                        <div style="width: 50%; height: auto">
+                            <div style="float: left;">
+                                @foreach ($columna1Espacio as $espacio)
+                                    <li>{{ $espacio }}</li>
+                                @endforeach
                             </div>
+                            <div style="float: left;">
+                                @foreach ($columna2Espacio as $espacio)
+                                    <li>{{ $espacio }}</li>
+                                @endforeach
+                            </div>
+                        </div>
                     @else
-                            Sin Espacios
+                        Sin Espacios
                     @endif
-                    <h2>Instalaciones:</h2>
                     @if (!empty($propiedades->caracteristica->instalaciones))
-                    @php
-                       $instalaciones = json_decode($propiedades->caracteristica->instalaciones);
+                        @php
+                            $instalaciones = json_decode($propiedades->caracteristica->instalaciones);
 
-                        // Verificar si $instalaciones es un array antes de contar los elementos
-                        if (is_array($instalaciones)) {
-                            $totalInstalaciones = count($instalaciones);
-                            $columna1Instalacion = array_slice($instalaciones, 0, ceil($totalInstalaciones / 2));
-                            $columna2Instalacion = array_slice($instalaciones, ceil($totalInstalaciones / 2));
-                        } else {
-                            $totalInstalaciones = 0;
-                            $columna1Instalacion = [];
-                            $columna2Instalacion = [];
-                        }
-                    @endphp
+                            // Verificar si $instalaciones es un array antes de contar los elementos
+                            if (is_array($instalaciones)) {
+                                $totalInstalaciones = count($instalaciones);
+                                $columna1Instalacion = array_slice($instalaciones, 0, ceil($totalInstalaciones / 2));
+                                $columna2Instalacion = array_slice($instalaciones, ceil($totalInstalaciones / 2));
+                            } else {
+                                $totalInstalaciones = 0;
+                                $columna1Instalacion = [];
+                                $columna2Instalacion = [];
+                            }
+                        @endphp
 
-                    <div style="overflow: auto;">
-                        <div style="float: left; width: 50%;">
-                            @foreach ($columna1Instalacion as $instalacion)
-                                <li>{{ $instalacion }}</li>
-                            @endforeach
+                        <div style="width: 50%;">
+                            <h2>Instalaciones:</h2>
+
+                            <div style="float: left;">
+                                @foreach ($columna1Instalacion as $instalacion)
+                                    <li>{{ $instalacion }}</li>
+                                @endforeach
+                            </div>
+                            <div style="float: left; width: 50%;">
+                                @foreach ($columna2Instalacion as $instalacion)
+                                    <li>{{ $instalacion }}</li>
+                                @endforeach
+                            </div>
                         </div>
-                        <div style="float: left; width: 50%;">
-                            @foreach ($columna2Instalacion as $instalacion)
-                                <li>{{ $instalacion }}</li>
-                            @endforeach
-                        </div>
-                    </div>
                     @else
                         Sin Instalaciones
                     @endif
-                    <h2>Restricciones:</h2>
                     @if (!empty($propiedades->caracteristica->restricciones))
-                    @php
-                  $restricciones = json_decode($propiedades->caracteristica->restricciones);
+                        @php
+                            $restricciones = json_decode($propiedades->caracteristica->restricciones);
 
-                    // Verificar si $restricciones es un array antes de contar los elementos
-                    if (is_array($restricciones)) {
-                        $totalRestricciones = count($restricciones);
-                        $columna1Restricciones = array_slice($restricciones, 0, ceil($totalRestricciones / 2));
-                        $columna2Restricciones = array_slice($restricciones, ceil($totalRestricciones / 2));
-                    } else {
-                        $totalRestricciones = 0;
-                        $columna1Restricciones = [];
-                        $columna2Restricciones = [];
-                    }
-                    @endphp
+                            // Verificar si $restricciones es un array antes de contar los elementos
+                            if (is_array($restricciones)) {
+                                $totalRestricciones = count($restricciones);
+                                $columna1Restricciones = array_slice($restricciones, 0, ceil($totalRestricciones / 2));
+                                $columna2Restricciones = array_slice($restricciones, ceil($totalRestricciones / 2));
+                            } else {
+                                $totalRestricciones = 0;
+                                $columna1Restricciones = [];
+                                $columna2Restricciones = [];
+                            }
+                        @endphp
 
-                    <div style="overflow: auto;">
-                        <div style="float: left; width: 50%;">
-                            @foreach ($columna1Restricciones as $restriccion)
-                                <li>{{ $restriccion }}</li>
-                            @endforeach
+                        <div style="overflow: auto; width: 50%">
+                            <h2>Restricciones:</h2>
+
+                            <div style="float: left; width: 50%;">
+                                @foreach ($columna1Restricciones as $restriccion)
+                                    <li>{{ $restriccion }}</li>
+                                @endforeach
+                            </div>
+                            <div style="float: left; width: 50%;">
+                                @foreach ($columna2Restricciones as $restriccion)
+                                    <li>{{ $restriccion }}</li>
+                                @endforeach
+                            </div>
                         </div>
-                        <div style="float: left; width: 50%;">
-                            @foreach ($columna2Restricciones as $restriccion)
-                                <li>{{ $restriccion }}</li>
-                            @endforeach
-                        </div>
-                    </div>
                     @else
                         Sin Restricciones
                     @endif
                 </td>
                 {{-- <td> --}}
 
-                    {{-- <div class="galeria-fotos">
+                {{-- <div class="galeria-fotos">
                         @foreach ($propiedades->foto as $foto)
                             <img class="secundarias-img" src="{{ public_path('storage/'.$propiedades->id.'/'.$foto->fotos) }}" alt="Foto">
                         @endforeach
@@ -196,8 +209,10 @@
                 {{-- </td> --}}
             </tr>
         </table>
-        @if(count($propiedades->foto) > 0)
-            <img class="primera-img" src="{{ public_path('storage/'.$propiedades->id.'/'.$propiedades->foto[0]->fotos) }}" alt="Foto" >
+        @if (count($propiedades->foto) > 0)
+            <img class="primera-img"
+                src="{{ public_path('storage/' . $propiedades->id . '/' . $propiedades->foto[0]->fotos) }}"
+                alt="Foto">
         @endif
 
         <h2 style="margin-top: 80px; margin-bottom: 0">Básicos</h2>
@@ -212,11 +227,11 @@
                 <p>Estacionamiento: {{ $propiedades->basico->estacionamiento ?? '' }}</p>
                 <p>Cocinas: {{ $propiedades->basico->cocinas ?? '' }}</p>
                 <p>Baños: {{ $propiedades->basico->banios ?? '' }}</p>
-                <p>Medios Baños: {{ $propiedades->basico->medios_banios ?? ''}}</p>
+                <p>Medios Baños: {{ $propiedades->basico->medios_banios ?? '' }}</p>
             </div>
             <div style="float: left; width: 30%;">
-                <p>Número de casas: {{ $propiedades->basico->numero_casas ?? ''}}</p>
-                <p>Piso Ubicado: {{ $propiedades->basico->piso_ubicado ?? ''}}</p>
+                <p>Número de casas: {{ $propiedades->basico->numero_casas ?? '' }}</p>
+                <p>Piso Ubicado: {{ $propiedades->basico->piso_ubicado ?? '' }}</p>
                 <p>Recamaras: {{ $propiedades->basico->recamaras ?? '' }}</p>
 
             </div>
@@ -224,4 +239,5 @@
         </div>
     </div>
 </body>
+
 </html>
