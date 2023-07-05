@@ -117,15 +117,16 @@
                                 $columna2Espacio = [];
                             }
                         @endphp
-                        <h2>Espacios:</h2>
 
                         <div style="width: 50%; height: auto">
-                            <div style="float: left;">
+                            <h2>Espacios:</h2>
+
+                            <div style="float: left; width: 50%;">
                                 @foreach ($columna1Espacio as $espacio)
                                     <li>{{ $espacio }}</li>
                                 @endforeach
                             </div>
-                            <div style="float: left;">
+                            <div style="float: left; width: 50%;">
                                 @foreach ($columna2Espacio as $espacio)
                                     <li>{{ $espacio }}</li>
                                 @endforeach
@@ -150,10 +151,10 @@
                             }
                         @endphp
 
-                        <div style="width: 50%;">
+                        <div style="width: 50%;  height: auto; margin-top: 20px;">
                             <h2>Instalaciones:</h2>
 
-                            <div style="float: left;">
+                            <div style="float: left; width: 50%;">
                                 @foreach ($columna1Instalacion as $instalacion)
                                     <li>{{ $instalacion }}</li>
                                 @endforeach
@@ -201,14 +202,7 @@
                         Sin Restricciones
                     @endif
                 </td>
-                {{-- <td> --}}
 
-                {{-- <div class="galeria-fotos">
-                        @foreach ($propiedades->foto as $foto)
-                            <img class="secundarias-img" src="{{ public_path('storage/'.$propiedades->id.'/'.$foto->fotos) }}" alt="Foto">
-                        @endforeach
-                    </div> --}}
-                {{-- </td> --}}
             </tr>
         </table>
         @if (count($propiedades->foto) > 0)
