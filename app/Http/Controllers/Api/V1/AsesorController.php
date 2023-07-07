@@ -5,15 +5,17 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Models\Asesor;
 use App\Models\Cliente;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class AsesorController extends Controller
 {
     public function indexPublic()
     {
-        $datos = Asesor::where('publico',true)->get();
+        $datos = Asesor::where('publico', true)->get();
         return response()->json($datos);
     }
     /**
@@ -31,6 +33,17 @@ class AsesorController extends Controller
     public function store(Request $request)
     {
 
+        // Registrar en usuarios
+        $user = User::create([
+            'name' => $request->nombre . " " . $request->apellidos,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'role_id' => 2
+        ]);
+
+        $idUser = $user->id;
+
+        //Registrar asesor
         $carpeta = "asesor";
         $ruta = public_path($carpeta);
         if (!\File::isDirectory($ruta)) {
@@ -59,9 +72,17 @@ class AsesorController extends Controller
         $asesor->contacto_emergencia = $request->contacto_emergencia;
         $asesor->status = $request->status;
         $asesor->publico = $request->publico;
+        $asesor->user_id = $idUser;
         $asesor->save();
 
-        return response()->json($asesor);
+
+
+
+        return response()->json([
+            'message' => 'Usuario creado exitosamente.',
+            'asesor' => $asesor,
+            'usuario' => $user
+        ], 201);
 
 
 

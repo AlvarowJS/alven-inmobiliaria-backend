@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('asesors', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->nullable()->constrained('users');
             $table->string("nombre")->nullable();
             $table->string("apellidos")->nullable();
             $table->string("rfc")->nullable();
