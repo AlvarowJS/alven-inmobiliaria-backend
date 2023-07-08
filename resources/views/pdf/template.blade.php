@@ -233,6 +233,14 @@
             </div>
 
         </div>
+        <h2 style="margin-bottom: 0; margin-top: 10px;">Asesor Exclusivo</h2>
+        <div style="overflow: auto; ">
+            <div style="float:left; width: 40%;">
+                <p>Asesor: {{ $propiedades->asesor->nombre ?? '' }} {{ $propiedades->asesor->apellidos ?? '' }}</p>
+                <p>Telefono: {{ $propiedades->asesor->celular ?? '' }}</p>
+
+            </div>
+        </div>
     </div>
 </body>
 

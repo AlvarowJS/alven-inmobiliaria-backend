@@ -124,9 +124,29 @@ class AsesorController extends Controller
 
     public function update_fotos(Request $request)
     {
+
+
         $carpeta = "asesor";
         $id = $request->id;
         $asesor = Asesor::find($id);
+        $asesorUser = User::where('id', $asesor->user_id)->first();
+
+        // actualizar usuario
+        if (!$asesorUser) {
+            return response()->json([
+                'message' => 'Usuario no encontrado.',
+            ], 404);
+        }
+        if ($request->has('password')) {
+            $asesorUser->password = Hash::make($request->password);
+        }
+
+        if ($request->has('email')) {
+            $asesorUser->email = $request->email;
+        }
+        $asesorUser->save();
+
+        // Actualizar asesor
         if (!$asesor) {
             return response()->json(['message' => 'Registro no encontrado'], 404);
         }
@@ -153,6 +173,7 @@ class AsesorController extends Controller
         $asesor->status = $request->status;
         $asesor->publico = $request->publico;
         $asesor->save();
+
         return response()->json($asesor);
     }
 

@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Models\Propiedad;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
-
+use App\Models\Cliente;
+use App\Models\Asesor;
+use App\Models\User;
 
 class PropiedadController extends Controller
 {
@@ -32,17 +34,34 @@ class PropiedadController extends Controller
         return response()->json($datos);
 
     }
-    public function exportarPdf($id)
+    public function exportarPdf($id, $id_user)
     {
-        $propiedades = Propiedad::with('publicidad', 'caracteristica', 'general', 'direccion', 'cliente', 'foto', 'basico')->find($id);
-
-        $pdf = Pdf::loadView('pdf.template', compact('propiedades'))
-            ->setPaper('a4', 'portrait');
+        $verificarRol = User::find($id_user);
+        $rol = $verificarRol->role_id;
 
 
-        return $pdf->download('documento.pdf');
+        if($rol == 2){
+            $propiedades = Propiedad::with('publicidad', 'caracteristica', 'general', 'direccion', 'cliente', 'foto', 'basico')->find($id);
+            $asesorActual = Asesor::where('user_id',$id_user)->first();
+            $propiedades->asesor = $asesorActual;
+
+            $pdf = Pdf::loadView('pdf.template', compact('propiedades'))
+                ->setPaper('a4', 'portrait');
 
 
+            return $pdf->download('documento.pdf');
+        }else{
+            $propiedades = Propiedad::with('publicidad', 'caracteristica', 'general', 'direccion', 'cliente', 'foto', 'basico')->find($id);
+            $idAsesor = $propiedades->cliente->asesor_id;
+            $asesorActual = Asesor::find($idAsesor);
+            $propiedades->asesor = $asesorActual;
+
+            $pdf = Pdf::loadView('pdf.template', compact('propiedades'))
+                ->setPaper('a4', 'portrait');
+
+
+            return $pdf->download('documento.pdf');
+        }
 
     }
     public function cambiarEstado(Request $request, $id)
@@ -98,7 +117,7 @@ class PropiedadController extends Controller
      */
     public function show($id)
     {
-        $datos = Propiedad::with('publicidad', 'caracteristica', 'general', 'direccion', 'cliente', 'foto', 'basico')->find($id);
+        $datos = Propiedad::with('publicidad', 'caracteristica', 'general', 'direccion', 'cliente.asesor', 'foto', 'basico')->find($id);
         if (!$datos) {
             return response()->json(['message' => 'Registro no encontrado'], 404);
         }
