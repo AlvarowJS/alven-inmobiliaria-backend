@@ -26,15 +26,19 @@ class AuthController extends Controller
             $role_id = $user->role_id;
 
             $asesor = Asesor::where('user_id', $id_user)->first();
+            $status = $asesor->status;
 
-            return response()->json([
-                'token' => $token,
-                'name' => $name,
-                'id_user' => $id_user,
-                'role_id' => $role_id,
-                'asesor' => $asesor
-
-            ]);
+            if ($status == 'Activo') {
+                return response()->json([
+                    'token' => $token,
+                    'name' => $name,
+                    'id_user' => $id_user,
+                    'role_id' => $role_id,
+                    'asesor' => $asesor
+                ]);
+            } else {
+                return response()->json(['error' => 'Credenciales inválidas'], 401);
+            }
         } else {
             return response()->json(['error' => 'Credenciales inválidas'], 401);
         }
