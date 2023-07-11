@@ -38,7 +38,7 @@ class AsesorController extends Controller
             'name' => $request->nombre . " " . $request->apellidos,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role_id' => 2
+            'role_id' => $request->role_id
         ]);
 
         $idUser = $user->id;
@@ -93,10 +93,11 @@ class AsesorController extends Controller
      */
     public function show($id)
     {
-        $datos = Asesor::find($id);
+        $datos = Asesor::with('user')->find($id);
         if (!$datos) {
             return response()->json(['message' => 'Registro no encontrado'], 404);
         }
+
         return response()->json($datos);
     }
 
@@ -137,12 +138,15 @@ class AsesorController extends Controller
                 'message' => 'Usuario no encontrado.',
             ], 404);
         }
-        if ($request->has('password')) {
+        if ($request->has('password') && !empty($request->password)) {
             $asesorUser->password = Hash::make($request->password);
         }
 
         if ($request->has('email')) {
             $asesorUser->email = $request->email;
+        }
+        if ($request->has('role_id')) {
+            $asesorUser->role_id = $request->role_id;
         }
         $asesorUser->save();
 
