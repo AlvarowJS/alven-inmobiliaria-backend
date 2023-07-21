@@ -33,7 +33,7 @@
         .encabezado-logo {
             display: inline-block;
             vertical-align: middle;
-            margin: 0 10px
+            margin: 0 40px
         }
 
         .logo-img {
@@ -158,7 +158,8 @@
     <div class="encabezado">
         <div class="encabezado-foto">
             <img class="foto-asesor" src="{{ public_path('storage/asesor' . '/' . $propiedades->asesor->foto) }}">
-            {{ $propiedades->asesor->nombre ?? '' }} {{ $propiedades->asesor->apellidos ?? '' }}
+            {{ $propiedades->asesor->nombre ?? '' }} <br>
+             {{ $propiedades->asesor->apellidos ?? '' }}
         </div>
         <div class="encabezado-logo">
             <img src="{{ public_path('images/logo2.png') }}" class="logo-img" alt="Logo">
