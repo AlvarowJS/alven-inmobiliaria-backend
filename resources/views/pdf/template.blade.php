@@ -22,7 +22,13 @@
             color: #ee8178;
         }
 
+        .nombre-asesor {
+            display: inline-block;
+            text-align: left;
+        }
+
         .foto-asesor {
+            display: inline-block;
             width: 60px;
             height: 60px;
             border-radius: 50%;
@@ -33,7 +39,7 @@
         .encabezado-logo {
             display: inline-block;
             vertical-align: middle;
-            margin: 0 40px
+            margin: 0 60px
         }
 
         .logo-img {
@@ -158,8 +164,10 @@
     <div class="encabezado">
         <div class="encabezado-foto">
             <img class="foto-asesor" src="{{ public_path('storage/asesor' . '/' . $propiedades->asesor->foto) }}">
-            {{ $propiedades->asesor->nombre ?? '' }} <br>
-             {{ $propiedades->asesor->apellidos ?? '' }}
+            <div class="nombre-asesor">
+                {{ $propiedades->asesor->nombre ?? '' }} <br>
+                {{ $propiedades->asesor->apellidos ?? '' }}
+            </div>
         </div>
         <div class="encabezado-logo">
             <img src="{{ public_path('images/logo2.png') }}" class="logo-img" alt="Logo">
