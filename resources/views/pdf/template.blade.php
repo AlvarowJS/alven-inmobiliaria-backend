@@ -220,7 +220,12 @@
     <hr>
     @php
         $espaciosArray = json_decode($propiedades->caracteristica->espacios, true);
-        $totalEspacios = count($espaciosArray);
+        // $totalEspacios = count($espaciosArray);
+        if (is_array($espaciosArray)) {
+            $totalEspacios = count($espaciosArray);
+        } else {
+            $totalEspacios = 0;
+        }
     @endphp
 
     @for ($i = 0; $i < $totalEspacios; $i += 4)
