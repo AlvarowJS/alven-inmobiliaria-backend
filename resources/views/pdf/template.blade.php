@@ -33,7 +33,7 @@
         .encabezado-logo {
             display: inline-block;
             vertical-align: middle;
-            margin: 0 100px
+            margin: 0 50px
         }
 
         .logo-img {
