@@ -3,60 +3,151 @@
 
 <head>
 
-
-
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
+            color: #333333;
             /* position: relative; */
         }
 
-
-
-        .logo {
-            width: 100px;
-            height: 70px;
-        }
-
-        .primera-img {
-
-            width: 300px;
-            height: auto;
-            position: absolute;
-            top: 30%;
-            right: 0;
-            z-index: 9999;
-        }
-
-        .secundarias-img {
-            width: 140px;
-            height: 140px;
-
-        }
-
-        .header {
+        .encabezado {
             text-align: center;
-            /* margin-bottom: 20px; */
         }
 
-        .caracteristicas {
-            width: 50%;
+        .encabezado-foto {
+            display: inline-block;
+            vertical-align: middle;
+            color: #ee8178;
         }
 
-        li {
-            /* margin-left: 30px */
+        .foto-asesor {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: 3px solid #ee8178;
+
         }
 
-        p {
-            margin-bottom: 4px;
-            margin-top: 0;
+        .encabezado-logo {
+            display: inline-block;
+            vertical-align: middle;
+            margin: 0 100px
         }
 
-        .espacios {
+        .logo-img {
+            width: 100px;
+            height: 100px;
+        }
+
+        .encabezado-datos {
+            display: inline-block;
+            text-align: right;
+
+        }
+
+        .encabezado-datos p {
+            margin-bottom: 0px;
+            margin-top: 0px;
+
+        }
+
+        .portada {
+            text-align: center;
+            background-color: #E6E7E8;
+        }
+
+        .portada-img {
+            width: '100%';
+            height: 300px;
+
+        }
+
+        .titulo {
+            color: black;
+        }
+
+        .titulo-color {
+            color: #ee8178
+        }
+
+        .tipo-propiedad {
+            display: inline-block;
+            margin-right: 60px
+        }
+
+        .tipo-operacion {
+            display: inline-block;
+
+        }
+
+        .basicos {
+            padding-left: 30px;
+        }
+
+        .basicos p {
+            margin-bottom: 0px;
+            margin-top: 0px;
+        }
+
+        .descripcion {
+            padding-left: 40px;
+        }
+
+        .direccion {
+            padding-left: 40px;
+        }
+
+        .galeria {
+            /* display: inline; */
+            page-break-inside: avoid;
+            padding-top: 30px;
+
+        }
+
+        .galeria b {
+            margin-left: 40px
+        }
+
+        .galeria-img {
             width: 300px;
+            height: 250px;
+            margin-right: 20px;
+            margin-bottom: 20px;
 
+        }
+
+        .pie {
+            text-align: center;
+        }
+
+        .pie p {
+            margin-bottom: 0px;
+            margin-top: 0px;
+            font-size: 12px
+        }
+
+        .pie b {
+
+            font-size: 12px
+        }
+
+        hr {
+            color: #E6E7E8;
+        }
+
+        /* dividir */
+        .column {
+            float: left;
+            width: 25%;
+            /* Ancho de cada columna (25% para 4 columnas) */
+            box-sizing: border-box;
+            padding: 5px;
+        }
+
+        .clear {
+            clear: both;
         }
     </style>
 
@@ -64,155 +155,124 @@
 </head>
 
 <body>
-    <div class="container">
-        <h1 style="display: inline-block; margin-right: 90px">{{ $propiedades->publicidad->encabezado ?? '' }}</h1>
-        <div style="text-align: center">
-            <img src="{{ public_path('images/logo.png') }}" class="logo" alt="Logo" >
+    <div class="encabezado">
+        <div class="encabezado-foto">
+            <img class="foto-asesor" src="{{ public_path('storage/asesor' . '/' . $propiedades->asesor->foto) }}">
+            {{ $propiedades->asesor->nombre ?? '' }} {{ $propiedades->asesor->apellidos ?? '' }}
         </div>
-        <h4 style="text-align: right">
-            {{ $propiedades->direccion->calle ?? '' }} {{ $propiedades->direccion->numero ?? '' }} -
-            {{ $propiedades->direccion->municipio ?? '' }} - {{ $propiedades->direccion->estado ?? '' }}
-        </h4>
+        <div class="encabezado-logo">
+            <img src="{{ public_path('images/logo2.png') }}" class="logo-img" alt="Logo">
+        </div>
 
-        <div style="overflow: auto; width: 100%;">
-            <p>Precio: ${{ number_format($propiedades->publicidad->precio_venta ?? 0, 2, ',', '.') }}</p>
-            <p>{!! nl2br(e($propiedades->publicidad->descripcion ?? '')) !!}</p>
-            <p>Con las siguientes características</p>
-            <p>Mascotas: {{ $propiedades->caracteristica->mascotas ?? '' }}</p>
+        <div class="encabezado-datos">
+            <p>ID: {{ $propiedades->general->numero_ofna ?? '' }}</p>
+            <p>{{ $propiedades->asesor->email ?? '' }}</p>
+            <p>{{ $propiedades->asesor->celular ?? '' }}</p>
         </div>
+    </div>
+    <div class="portada">
         @if (count($propiedades->foto) > 0)
-            <img class="primera-img"
+            <img class="portada-img"
                 src="{{ public_path('storage/' . $propiedades->id . '/' . $propiedades->foto[0]->fotos) }}"
                 alt="Foto">
         @endif
-        @if (!empty($propiedades->caracteristica->espacios))
-            @php
-                $espacios = json_decode($propiedades->caracteristica->espacios);
-                if (is_array($espacios)) {
-                    $totalEspacios = count($espacios);
-                    $columna1Espacio = array_slice($espacios, 0, ceil($totalEspacios / 2));
-                    $columna2Espacio = array_slice($espacios, ceil($totalEspacios / 2));
-                } else {
-                    $totalEspacios = 0;
-                    $columna1Espacio = [];
-                    $columna2Espacio = [];
-                }
-            @endphp
+    </div>
 
-            <div style="width: 50%; height: auto">
-                <h2>Espacios:</h2>
-                <ul style="float: left; width: 50%;">
-                    @foreach ($columna1Espacio as $espacio)
-                        <li>{{ $espacio }}</li>
-                    @endforeach
-                </ul>
-                <ul style="float: left; width: 50%;">
-                    @foreach ($columna2Espacio as $espacio)
-                        <li>{{ $espacio }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @else
-            Sin Espacios
-        @endif
+    <div class="titulo">
+        <p class="titulo-color">{{ $propiedades->publicidad->encabezado ?? '' }}</p>
+        <p>{{ $propiedades->direccion->calle ?? '' }} {{ $propiedades->direccion->numero ?? '' }} ,
+            {{ $propiedades->direccion->municipio ?? '' }} , {{ $propiedades->direccion->estado ?? '' }}</p>
+    </div>
 
-        @if (!empty($propiedades->caracteristica->instalaciones))
-            @php
-                $instalaciones = json_decode($propiedades->caracteristica->instalaciones);
+    <hr>
 
-                // Verificar si $instalaciones es un array antes de contar los elementos
-                if (is_array($instalaciones)) {
-                    $totalInstalaciones = count($instalaciones);
-                    $columna1Instalacion = array_slice($instalaciones, 0, ceil($totalInstalaciones / 2));
-                    $columna2Instalacion = array_slice($instalaciones, ceil($totalInstalaciones / 2));
-                } else {
-                    $totalInstalaciones = 0;
-                    $columna1Instalacion = [];
-                    $columna2Instalacion = [];
-                }
-            @endphp
+    <div>
+        <p><b>Venta: ${{ number_format($propiedades->publicidad->precio_venta ?? 0, 2, ',', ',') }}</b></p>
+    </div>
 
-            <div style="width: 50%; height: auto; margin-top: 20px;">
-                <h2>Instalaciones:</h2>
-                <ul style="float: left; width: 50%;">
-                    @foreach ($columna1Instalacion as $instalacion)
-                        <li>{{ $instalacion }}</li>
-                    @endforeach
-                </ul>
-                <ul style="float: left; width: 50%;">
-                    @foreach ($columna2Instalacion as $instalacion)
-                        <li>{{ $instalacion }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @else
-            Sin Instalaciones
-        @endif
+    <hr>
 
-        @if (!empty($propiedades->caracteristica->restricciones))
-            @php
-                $restricciones = json_decode($propiedades->caracteristica->restricciones);
-
-                // Verificar si $restricciones es un array antes de contar los elementos
-                if (is_array($restricciones)) {
-                    $totalRestricciones = count($restricciones);
-                    $columna1Restricciones = array_slice($restricciones, 0, ceil($totalRestricciones / 2));
-                    $columna2Restricciones = array_slice($restricciones, ceil($totalRestricciones / 2));
-                } else {
-                    $totalRestricciones = 0;
-                    $columna1Restricciones = [];
-                    $columna2Restricciones = [];
-                }
-            @endphp
-
-            <div style="overflow: auto; width: 50%">
-                <h2>Restricciones:</h2>
-                <ul>
-                    @foreach ($columna1Restricciones as $restriccion)
-                        <li>{{ $restriccion }}</li>
-                    @endforeach
-
-                    @foreach ($columna2Restricciones as $restriccion)
-                        <li>{{ $restriccion }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @else
-            Sin Restricciones
-        @endif
-        {{-- </td>
-            </tr> --}}
-        <div style="overflow: auto; width: 100%;">
-            <h2 style="margin-bottom: 0">Básicos</h2>
-            <div style="padding-left: 30px">
-                <div style="width: 100%;">
-                    <p>Superficie del terreno: {{ $propiedades->basico->superficie_terreno ?? '' }}</p>
-                    <p>Superficie de construcción: {{ $propiedades->basico->superficie_construccion ?? '' }}</p>
-                    <p>Niveles construidos: {{ $propiedades->basico->niveles_construidos ?? '' }}</p>
-                    <p>Número de elevadores: {{ $propiedades->basico->numero_elevadores ?? '' }}</p>
-                    {{-- </div>
-                <div style="float: left; width: 30%;"> --}}
-                    <p>Estacionamiento: {{ $propiedades->basico->estacionamiento ?? '' }}</p>
-                    <p>Cocinas: {{ $propiedades->basico->cocinas ?? '' }}</p>
-                    <p>Baños: {{ $propiedades->basico->banios ?? '' }}</p>
-                    <p>Medios Baños: {{ $propiedades->basico->medios_banios ?? '' }}</p>
-                    {{-- </div>
-                <div style="float: left; width: 30%;"> --}}
-                    <p>Número de casas: {{ $propiedades->basico->numero_casas ?? '' }}</p>
-                    <p>Piso Ubicado: {{ $propiedades->basico->piso_ubicado ?? '' }}</p>
-                    <p>Recamaras: {{ $propiedades->basico->recamaras ?? '' }}</p>
-                </div>
-            </div>
+    <div class="tipo">
+        <div class="tipo-propiedad">
+            <p><b>Tipo de propiedad: {{ $propiedades->general->tipo_propiedad ?? '' }}</b></p>
         </div>
-
-        <h2 style="margin-bottom: 0; margin-top: 10px;">Asesor Exclusivo</h2>
-        <div style="overflow: auto; ">
-            <div>
-                <p>Asesor: {{ $propiedades->asesor->nombre ?? '' }} {{ $propiedades->asesor->apellidos ?? '' }}</p>
-                <p>Teléfono: {{ $propiedades->asesor->celular ?? '' }}</p>
-            </div>
+        <div class="tipo-operacion">
+            <p><b>Tipo de operación: </b>{{ $propiedades->general->tipo_operacion ?? '' }}</p>
         </div>
     </div>
+
+    <hr>
+
+    <div class="basicos">
+        <p><b>• Superficie del terreno:</b> {{ $propiedades->basico->superficie_terreno ?? '' }}</p>
+        <p><b>• Superficie de construcción:</b> {{ $propiedades->basico->superficie_construccion ?? '' }}</p>
+        <p><b>• Niveles construidos:</b> {{ $propiedades->basico->niveles_construidos ?? '' }}</p>
+        <p><b>• Número de elevadores:</b> {{ $propiedades->basico->numero_elevadores ?? '' }}</p>
+        <p><b>• Estacionamiento:</b> {{ $propiedades->basico->estacionamiento ?? '' }}</p>
+        <p><b>• Cocinas:</b> {{ $propiedades->basico->cocinas ?? '' }}</p>
+        <p><b>• Baños:</b> {{ $propiedades->basico->banios ?? '' }}</p>
+        <p><b>• Medios Baños:</b> {{ $propiedades->basico->medios_banios ?? '' }}</p>
+        <p><b>• Número de casas:</b> {{ $propiedades->basico->numero_casas ?? '' }}</p>
+        <p><b>• Piso Ubicado:</b> {{ $propiedades->basico->piso_ubicado ?? '' }}</p>
+        <p><b>• Recamaras:</b> {{ $propiedades->basico->recamaras ?? '' }}</p>
+    </div>
+
+    <hr>
+    @php
+        $espaciosArray = json_decode($propiedades->caracteristica->espacios, true);
+        $totalEspacios = count($espaciosArray);
+    @endphp
+
+    @for ($i = 0; $i < $totalEspacios; $i += 4)
+        <div class="column">
+            <ul>
+                @for ($j = $i; $j < min($i + 4, $totalEspacios); $j++)
+                    <li>{{ $espaciosArray[$j] }}</li>
+                @endfor
+            </ul>
+        </div>
+    @endfor
+
+    <div class="clear"></div>
+
+    <hr>
+
+    <div class="descripcion">
+        <b>Descripción</b>
+        <p>{!! nl2br(e($propiedades->publicidad->descripcion ?? '')) !!}</p>
+    </div>
+
+    <hr>
+
+    <div class="direccion">
+        <b>Ubicación</b>
+        <p>{{ $propiedades->direccion->calle ?? '' }} {{ $propiedades->direccion->numero ?? '' }} ,
+            {{ $propiedades->direccion->municipio ?? '' }} , {{ $propiedades->direccion->estado ?? '' }}</p>
+    </div>
+
+    <hr>
+    <b style="margin-left: 40px">Catálogo de fotos</b>
+
+    <div class="galeria">
+
+        @foreach ($propiedades->foto as $foto)
+            <img class="galeria-img" src="{{ public_path('storage/' . $propiedades->id . '/' . $foto->fotos) }}"
+                alt="Foto">
+        @endforeach
+    </div>
+
+    <div class="pie">
+        <b>Dirección: C. J. Enrique Pestalozzi 583 - CDMX, México</b> <br>
+        <b>Teléfono: +52 55 11 07 87 17 | www.alven-inmobiliaria.com.mx </b>
+        <div style="margin-top: 20px; ">
+            <p>Propiedad sujeta a disponibilidad.</p>
+            <p>Precio sujeto a cambios sin previo aviso.</p>
+            <p>El envío de esta ficha no compromete a las partes a la suscripción de ningún documento legal. La
+                información y medidas </p>
+            <p>son aproximadas y deberán ratificarse con la documentación pertinente.</p>
+        </div>
+    </div>
+
 </body>
 
 </html>
