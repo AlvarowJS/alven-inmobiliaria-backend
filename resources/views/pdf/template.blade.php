@@ -172,7 +172,10 @@
 <body>
     <div class="encabezado">
         <div class="encabezado-foto">
-            <img class="foto-asesor" src="{{ public_path('storage/asesor' . '/' . $propiedades->asesor->foto) }}">
+            @if (isset($propiedades->asesor->foto))
+                <img class="foto-asesor" src="{{ public_path('storage/asesor/' . $propiedades->asesor->foto) }}">
+            @endif
+
             <div class="nombre-asesor">
                 {{ $propiedades->asesor->nombre ?? '' }} <br>
                 {{ $propiedades->asesor->apellidos ?? '' }}
