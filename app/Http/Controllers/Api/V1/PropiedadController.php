@@ -39,37 +39,29 @@ class PropiedadController extends Controller
         $verificarRol = User::find($id_user);
         $rol = $verificarRol->role_id;
 
-        $propiedades = Propiedad::with('publicidad', 'caracteristica', 'general', 'direccion', 'cliente', 'foto', 'basico')->find($id);
-        $asesorActual = Asesor::where('user_id', $id_user)->first();
-        $propiedades->asesor = $asesorActual;
 
-        $pdf = Pdf::loadView('pdf.template', compact('propiedades'))
-            ->setPaper('a4', 'portrait');
+        if($rol == 2){
+            $propiedades = Propiedad::with('publicidad', 'caracteristica', 'general', 'direccion', 'cliente', 'foto', 'basico')->find($id);
+            $asesorActual = Asesor::where('user_id',$id_user)->first();
+            $propiedades->asesor = $asesorActual;
 
-
-        return $pdf->download('documento.pdf');
-        // if($rol == 2){
-        //     $propiedades = Propiedad::with('publicidad', 'caracteristica', 'general', 'direccion', 'cliente', 'foto', 'basico')->find($id);
-        //     $asesorActual = Asesor::where('user_id',$id_user)->first();
-        //     $propiedades->asesor = $asesorActual;
-
-        //     $pdf = Pdf::loadView('pdf.template', compact('propiedades'))
-        //         ->setPaper('a4', 'portrait');
+            $pdf = Pdf::loadView('pdf.template', compact('propiedades'))
+                ->setPaper('a4', 'portrait');
 
 
-        //     return $pdf->download('documento.pdf');
-        // }else{
-        //     $propiedades = Propiedad::with('publicidad', 'caracteristica', 'general', 'direccion', 'cliente', 'foto', 'basico')->find($id);
-        //     $idAsesor = $propiedades->cliente->asesor_id;
-        //     $asesorActual = Asesor::find($idAsesor);
-        //     $propiedades->asesor = $asesorActual;
+            return $pdf->download('documento.pdf');
+        }else{
+            $propiedades = Propiedad::with('publicidad', 'caracteristica', 'general', 'direccion', 'cliente', 'foto', 'basico')->find($id);
+            $idAsesor = $propiedades->cliente->asesor_id;
+            $asesorActual = Asesor::find($idAsesor);
+            $propiedades->asesor = $asesorActual;
 
-        //     $pdf = Pdf::loadView('pdf.template', compact('propiedades'))
-        //         ->setPaper('a4', 'portrait');
+            $pdf = Pdf::loadView('pdf.template', compact('propiedades'))
+                ->setPaper('a4', 'portrait');
 
 
-        //     return $pdf->download('documento.pdf');
-        // }
+            return $pdf->download('documento.pdf');
+        }
 
     }
     public function cambiarEstado(Request $request, $id)
