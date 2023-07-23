@@ -107,18 +107,27 @@
 
         .galeria {
             /* display: inline; */
-            page-break-inside: avoid;
-            padding-top: 30px;
+            /* page-break-inside: avoid; */
+            /* padding-top: 30px; */
+            /* float: bottom; */
 
+        }
+
+        .galeria-container {
+            text-align: center;
+            /* display: inline-block; */
         }
 
         .galeria b {
-            margin-left: 40px
+            margin-left: 40px;
+            margin-bottom: 30px;
         }
 
         .galeria-img {
+            /* display: inline-block; */
             width: 300px;
-            height: 250px;
+            height: 200px;
+            margin-top: 10px;
             margin-right: 20px;
             margin-bottom: 20px;
 
@@ -265,14 +274,31 @@
     </div>
 
     <hr>
-    <b style="margin-left: 40px">Catálogo de fotos</b>
+
 
     <div class="galeria">
+        <b style="margin-left: 40px">Catálogo de fotos</b>
+        <br>
 
-        @foreach ($propiedades->foto as $foto)
-            <img class="galeria-img" src="{{ public_path('storage/' . $propiedades->id . '/' . $foto->fotos) }}"
-                alt="Foto">
-        @endforeach
+        <table style="width:100%">
+            @foreach ($propiedades->foto as $index => $foto)
+                @if ($index % 2 === 0)
+                    <tr>
+                @endif
+                <td>
+                    <img class="galeria-img"
+                        src="{{ public_path('storage/' . $propiedades->id . '/' . $foto->fotos) }}" alt="Foto">
+                </td>
+                @if ($index % 2 !== 0 || $loop->last)
+                    </tr>
+                @endif
+            @endforeach
+        </table>
+        <div class="galeria-container">
+
+        </div>
+
+
     </div>
 
     <div class="pie">
