@@ -40,6 +40,7 @@ class BasicoController extends Controller
         $basico->numero_casas = $request->numero_casas;
         $basico->numero_elevadores = $request->numero_elevadores;
         $basico->piso_ubicado = $request->piso_ubicado;
+        $basico->edad = $request->edad;
         $basico->save();
 
         $id = $basico->id;
@@ -84,6 +85,7 @@ class BasicoController extends Controller
         $datos->numero_casas = $request->numero_casas;
         $datos->numero_elevadores = $request->numero_elevadores;
         $datos->piso_ubicado = $request->piso_ubicado;
+        $datos->edad = $request->edad;
         $datos->save();
         return response()->json($datos);
     }

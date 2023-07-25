@@ -236,6 +236,7 @@
         <p><b>• Número de casas:</b> {{ $propiedades->basico->numero_casas ?? '' }}</p>
         <p><b>• Piso Ubicado:</b> {{ $propiedades->basico->piso_ubicado ?? '' }}</p>
         <p><b>• Recamaras:</b> {{ $propiedades->basico->recamaras ?? '' }}</p>
+        <p><b>• Edad del inmueble:</b> {{ $propiedades->basico->edad ?? '' }}</p>
     </div>
 
     <hr>
@@ -274,6 +275,13 @@
         <b>Ubicación</b>
         <p>{{ $propiedades->direccion->calle ?? '' }} {{ $propiedades->direccion->numero ?? '' }} ,
             {{ $propiedades->direccion->municipio ?? '' }} , {{ $propiedades->direccion->estado ?? '' }}</p>
+
+        <b>Referencias</b> <br>
+        @if (isset($propiedades->publicidad->mapa))
+            <img class="portada-img"
+                src="{{ public_path('storage/' . $propiedades->id . '/mapa/' . $propiedades->publicidad->mapa) }}"
+                alt="Foto">
+        @endif
     </div>
 
     <hr>
