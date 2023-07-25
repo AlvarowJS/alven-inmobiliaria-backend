@@ -27,7 +27,27 @@ class PublicidadController extends Controller
      */
     public function store(Request $request)
     {
+
+        $carpeta = $request->id_propiedad;
+        $ruta = public_path($carpeta.'/mapa');
+
+        if (!\File::isDirectory($ruta)) {
+
+            $publicPath = 'storage/' . $ruta;
+            \File::makeDirectory($publicPath, 0777, true, true);
+        }
+        $files = $request->file('mapa');
+
         $publicidad = new Publicidad;
+
+        if ($request->hasFile('mapa')) {
+
+            $nombre = uniqid() . '.' . $files->getClientOriginalName();
+            $path = $carpeta . '/mapa/' . $nombre;
+            \Storage::disk('public')->put($path, \File::get($files));
+            $publicidad->mapa = $nombre;
+        }
+
         $publicidad->precio_venta = $request->precio_venta;
         $publicidad->encabezado = $request->encabezado;
         $publicidad->descripcion = $request->descripcion;
@@ -74,6 +94,30 @@ class PublicidadController extends Controller
         return response()->json($datos);
     }
 
+    public function update_fotos(Request $request)
+    {
+        $carpeta = $request->id_propiedad.'/mapa';
+        $id = $request->id;
+        $publicidad = Publicidad::find($id);
+
+        if ($request->hasFile('mapa')) {
+            $nombreArchivo = $publicidad->mapa;
+            $files = $request->file('mapa');
+
+            \Storage::disk('public')->delete($carpeta . '/' . $nombreArchivo);
+            $nombreNuevo = uniqid() . '.' . $files->getClientOriginalName();
+            $pathNuevo = $carpeta . '/' . $nombreNuevo;
+            \Storage::disk('public')->put($pathNuevo, \File::get($files));
+            $publicidad->mapa = $nombreNuevo;
+        }
+        $publicidad->precio_venta = $request->precio_venta;
+        $publicidad->encabezado = $request->encabezado;
+        $publicidad->descripcion = $request->descripcion;
+        $publicidad->video_url = $request->video_url;
+        $publicidad->estado = $request->estado;
+        $publicidad->save();
+        return response()->json($publicidad);
+    }
     /**
      * Remove the specified resource from storage.
      */
