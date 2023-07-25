@@ -103,8 +103,19 @@
 
         .direccion {
             padding-left: 40px;
-        }
+            margin-bottom: 20px;
 
+        }
+        .direccion-mapa{
+            text-align: center;
+            background-color: #E6E7E8;
+            
+        }
+        .direccion-img{
+            width: 600px;
+            height: 300px;
+            object-fit: cover;
+        }
         .galeria {
             /* display: inline; */
             /* page-break-inside: avoid; */
@@ -277,11 +288,13 @@
             {{ $propiedades->direccion->municipio ?? '' }} , {{ $propiedades->direccion->estado ?? '' }}</p>
 
         <b>Referencias</b> <br>
-        @if (isset($propiedades->publicidad->mapa))
-            <img class="portada-img"
-                src="{{ public_path('storage/' . $propiedades->id . '/mapa/' . $propiedades->publicidad->mapa) }}"
-                alt="Foto">
-        @endif
+        <div class="direccion-mapa">
+            @if (isset($propiedades->publicidad->mapa))
+                <img class="direccion-img"
+                    src="{{ public_path('storage/' . $propiedades->id . '/mapa/' . $propiedades->publicidad->mapa) }}"
+                    alt="Foto">
+            @endif
+        </div>
     </div>
 
     <hr>
