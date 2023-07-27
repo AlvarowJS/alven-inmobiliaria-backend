@@ -222,7 +222,7 @@
     <hr>
 
     <div>
-        <p><b>Venta: ${{ number_format($propiedades->publicidad->precio_venta ?? 0, 2, ',', ',') }}</b></p>
+        <p><b>Precio: ${{ number_format($propiedades->publicidad->precio_venta ?? 0, 2, ',', ',') }}</b></p>
     </div>
 
     <hr>
