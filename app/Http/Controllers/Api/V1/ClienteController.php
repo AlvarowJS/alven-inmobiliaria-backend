@@ -6,7 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Models\Cliente;
 use App\Models\Propiedad;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+
 use Illuminate\Support\Facades\DB;
+
 class ClienteController extends Controller
 {
     public function registarIdCliente(Request $request, $id)
@@ -25,6 +28,18 @@ class ClienteController extends Controller
 
     public function registarCliente(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'celular' => 'unique:clientes,celular',
+        ]);
+
+        if ($validator->fails()) {
+            $clientesDuplicados = Cliente::with('asesor')->where('celular', $request->celular)->first();
+            $asesorName = $clientesDuplicados->asesor->nombre .' '.$clientesDuplicados->asesor->apellidos;
+            return response()->json([
+                'error' => 'celular repetido',
+                'asesor' => $asesorName
+            ], 409);
+        }
         $cliente = new Cliente;
         $cliente->asesor_id = $request->asesor_id;
         $cliente->nombre = $request->nombre;
@@ -53,6 +68,18 @@ class ClienteController extends Controller
      */
     public function store(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'celular' => 'unique:clientes,celular',
+        ]);
+
+        if ($validator->fails()) {
+            $clientesDuplicados = Cliente::with('asesor')->where('celular', $request->celular)->first();
+            $asesorName = $clientesDuplicados->asesor->nombre .' '.$clientesDuplicados->asesor->apellidos;
+            return response()->json([
+                'error' => 'celular repetido',
+                'asesor' => $asesorName
+            ], 409);
+        }
         $cliente = new Cliente;
         $cliente->asesor_id = $request->asesor_id;
         $cliente->nombre = $request->nombre;
@@ -93,6 +120,20 @@ class ClienteController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $validator = Validator::make($request->all(), [
+            'celular' => 'unique:clientes,celular',
+        ]);
+
+        if($validator->fails()){
+
+            $clientesDuplicados = Cliente::with('asesor')->where('celular', $request->celular)->first();
+            $asesorName = $clientesDuplicados->asesor->nombre .' '.$clientesDuplicados->asesor->apellidos;
+            return response()->json([
+                'error' => 'celular repetido',
+                'asesor' => $asesorName
+            ], 409);
+        }
+
         $cliente = Cliente::find($id);
         if (!$cliente) {
             return response()->json(['message' => 'Registro no encontrado'], 404);

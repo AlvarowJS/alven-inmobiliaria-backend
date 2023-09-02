@@ -46,7 +46,7 @@ class PropiedadController extends Controller
         $pdf = Pdf::loadView('pdf.template', compact('propiedades'))
             ->setPaper('a4', 'portrait');
 
-
+        return $pdf->stream('documento.pdf');
         return $pdf->download('documento.pdf');
         // if($rol == 2){
         //     $propiedades = Propiedad::with('publicidad', 'caracteristica', 'general', 'direccion', 'cliente', 'foto', 'basico')->find($id);
