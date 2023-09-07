@@ -11,11 +11,10 @@ class GeneralController extends Controller
 {
     public function generarId()
     {
-        $datos = General::all();
-        $datos = count($datos);
-        $datos = str_pad($datos+1, 5, '0', STR_PAD_LEFT);
-
-        return $datos;
+        $datos = General::all()->sortByDesc('numero_ofna')->first();        
+        $ultimoNumeroOfna = $datos->numero_ofna;
+        $nuevoID = str_pad($ultimoNumeroOfna + 1, 5, '0', STR_PAD_LEFT);
+        return $nuevoID;
     }
     /**
      * Display a listing of the resource.
