@@ -34,7 +34,7 @@ class ClienteController extends Controller
 
         if ($validator->fails()) {
             $clientesDuplicados = Cliente::with('asesor')->where('celular', $request->celular)->first();
-            $asesorName = $clientesDuplicados->asesor->nombre .' '.$clientesDuplicados->asesor->apellidos;
+            $asesorName = $clientesDuplicados->asesor->nombre . ' ' . $clientesDuplicados->asesor->apellidos;
             return response()->json([
                 'error' => 'celular repetido',
                 'asesor' => $asesorName
@@ -45,7 +45,7 @@ class ClienteController extends Controller
         $cliente->nombre = $request->nombre;
         $cliente->apellido_materno = $request->apellido_materno;
         $cliente->apellido_paterno = $request->apellido_paterno;
-        $cliente->cedula = $request->cedula;
+        $cliente->interesado = $request->interesado;
         $cliente->email = $request->email;
         $cliente->celular = $request->celular;
         $cliente->medio_contacto = $request->medio_contacto;
@@ -72,9 +72,16 @@ class ClienteController extends Controller
             'celular' => 'unique:clientes,celular',
         ]);
 
-        if ($validator->fails()) {
+        if ($validator->fails()) {            
             $clientesDuplicados = Cliente::with('asesor')->where('celular', $request->celular)->first();
-            $asesorName = $clientesDuplicados->asesor->nombre .' '.$clientesDuplicados->asesor->apellidos;
+            if($clientesDuplicados->asesor ==null){
+                return response()->json([
+                    'error' => 'celular repetido',
+                    'cliente' => $clientesDuplicados->nombre .' '.$clientesDuplicados->apellido_materno .' '. $clientesDuplicados->apellido_paterno
+                ], 409);
+            }
+
+            $asesorName = $clientesDuplicados->asesor->nombre . ' ' . $clientesDuplicados->asesor->apellidos;
             return response()->json([
                 'error' => 'celular repetido',
                 'asesor' => $asesorName
@@ -85,7 +92,7 @@ class ClienteController extends Controller
         $cliente->nombre = $request->nombre;
         $cliente->apellido_materno = $request->apellido_materno;
         $cliente->apellido_paterno = $request->apellido_paterno;
-        $cliente->cedula = $request->cedula;
+        $cliente->interesado = $request->interesado;
         $cliente->email = $request->email;
         $cliente->celular = $request->celular;
         $cliente->medio_contacto = $request->medio_contacto;
@@ -120,20 +127,27 @@ class ClienteController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $validator = Validator::make($request->all(), [
-            'celular' => 'unique:clientes,celular',
-        ]);
+        $clienteActual = Cliente::find($id);
+        $clienteActual = $clienteActual->celular;
+        $clienteIngresado = $request->celular;
+        if ($clienteActual != $clienteIngresado) {
 
-        if($validator->fails()){
 
-            $clientesDuplicados = Cliente::with('asesor')->where('celular', $request->celular)->first();
-            $asesorName = $clientesDuplicados->asesor->nombre .' '.$clientesDuplicados->asesor->apellidos;
-            return response()->json([
-                'error' => 'celular repetido',
-                'asesor' => $asesorName
-            ], 409);
+
+            $validator = Validator::make($request->all(), [
+                'celular' => 'unique:clientes,celular',
+            ]);
+
+            if ($validator->fails()) {
+
+                $clientesDuplicados = Cliente::with('asesor')->where('celular', $request->celular)->first();
+                $asesorName = $clientesDuplicados->asesor->nombre . ' ' . $clientesDuplicados->asesor->apellidos;
+                return response()->json([
+                    'error' => 'celular repetido',
+                    'asesor' => $asesorName
+                ], 409);
+            }
         }
-
         $cliente = Cliente::find($id);
         if (!$cliente) {
             return response()->json(['message' => 'Registro no encontrado'], 404);
@@ -142,7 +156,7 @@ class ClienteController extends Controller
         $cliente->nombre = $request->nombre;
         $cliente->apellido_materno = $request->apellido_materno;
         $cliente->apellido_paterno = $request->apellido_paterno;
-        $cliente->cedula = $request->cedula;
+        $cliente->interesado = $request->interesado;
         $cliente->email = $request->email;
         $cliente->celular = $request->celular;
         $cliente->medio_contacto = $request->medio_contacto;

@@ -53,6 +53,9 @@ class PublicidadController extends Controller
         $publicidad->descripcion = $request->descripcion;
         $publicidad->video_url = $request->video_url;
         $publicidad->estado = $request->estado;
+        $publicidad->fecha_cierre = $request->fecha_cierre;
+        $publicidad->precio_cierre = $request->precio_cierre;
+        $publicidad->asesor_cierre = $request->asesor_cierre;
         $publicidad->save();
 
         $id = $publicidad->id;
@@ -90,12 +93,27 @@ class PublicidadController extends Controller
         $datos->descripcion = $request->descripcion;
         $datos->video_url = $request->video_url;
         $datos->estado = $request->estado;
+        $datos->fecha_cierre = $request->fecha_cierre;
+        $datos->precio_cierre = $request->precio_cierre;
+        $datos->asesor_cierre = $request->asesor_cierre;
         $datos->save();
         return response()->json($datos);
     }
 
     public function update_fotos(Request $request)
     {
+
+        $enlacesJson = $request->input('enlaces');
+
+        // Convierte la cadena JSON en un arreglo asociativo
+        $enlacesArray = json_decode($enlacesJson, true);
+        foreach ($enlacesArray as $enlace) {
+            $redSocial = $enlace['red_social'];
+            $enlaceUrl = $enlace['enlace'];
+            return $redSocial;
+            // Haz lo que necesites hacer con estos datos, como almacenarlos en la base de datos
+        }
+        
         $carpeta = $request->id_propiedad.'/mapa';
         $id = $request->id;
         $publicidad = Publicidad::find($id);
@@ -115,6 +133,9 @@ class PublicidadController extends Controller
         $publicidad->descripcion = $request->descripcion;
         $publicidad->video_url = $request->video_url;
         $publicidad->estado = $request->estado;
+        $publicidad->fecha_cierre = $request->fecha_cierre;
+        $publicidad->precio_cierre = $request->precio_cierre;
+        $publicidad->asesor_cierre = $request->asesor_cierre;
         $publicidad->save();
         return response()->json($publicidad);
     }
