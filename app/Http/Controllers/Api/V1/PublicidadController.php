@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Models\Publicidad;
 use App\Models\Propiedad;
+use App\Models\PublicidadLiga;
 use Illuminate\Http\Request;
 
 class PublicidadController extends Controller
@@ -29,7 +30,7 @@ class PublicidadController extends Controller
     {
 
         $carpeta = $request->id_propiedad;
-        $ruta = public_path($carpeta.'/mapa');
+        $ruta = public_path($carpeta . '/mapa');
 
         if (!\File::isDirectory($ruta)) {
 
@@ -53,18 +54,42 @@ class PublicidadController extends Controller
         $publicidad->descripcion = $request->descripcion;
         $publicidad->video_url = $request->video_url;
         $publicidad->estado = $request->estado;
-        $publicidad->fecha_cierre = $request->fecha_cierre;
-        $publicidad->precio_cierre = $request->precio_cierre;
-        $publicidad->asesor_cierre = $request->asesor_cierre;
+        $publicidad->fecha_cierre = $request->fecha_cierre ?? null;
+        $publicidad->precio_cierre = $request->precio_cierre ?? null;
+        $publicidad->asesor_cierre = $request->asesor_cierre ?? null;
         $publicidad->save();
 
         $id = $publicidad->id;
         $id_propiedad = $request->id_propiedad;
 
+        // Creara ligas para la publicidad
+        $enlacesJson = $request->input('enlaces');
+        $enlacesArray = json_decode($enlacesJson, true);
+        $nuevasLigas = [];
+        if (!empty($enlacesArray)) {
+            foreach ($enlacesArray as $enlace) {
+                $redSocial = $enlace['red_social'];
+                $enlaceUrl = $enlace['enlace'];
+
+                $ligas = new PublicidadLiga();
+                $ligas->publicidad_id = $id;
+                $ligas->red_social = $redSocial;
+                $ligas->enlace = $enlaceUrl;
+                $ligas->save();
+
+                $nuevasLigas[] = $ligas;
+            }
+        }
+        // Fin de la creacion
+
         $propiedad = Propiedad::find($id_propiedad);
         $propiedad->publicidad_id = $id;
         $propiedad->save();
-        return response()->json($propiedad);
+
+        return response()->json([
+            'ligas' => $nuevasLigas,
+            $propiedad
+        ]);
     }
 
     /**
@@ -102,20 +127,49 @@ class PublicidadController extends Controller
 
     public function update_fotos(Request $request)
     {
-
+        $id = $request->id;
         $enlacesJson = $request->input('enlaces');
 
         // Convierte la cadena JSON en un arreglo asociativo
         $enlacesArray = json_decode($enlacesJson, true);
-        foreach ($enlacesArray as $enlace) {
-            $redSocial = $enlace['red_social'];
-            $enlaceUrl = $enlace['enlace'];
-            return $redSocial;
-            // Haz lo que necesites hacer con estos datos, como almacenarlos en la base de datos
-        }
-        
-        $carpeta = $request->id_propiedad.'/mapa';
-        $id = $request->id;
+        $enlacesActuales = PublicidadLiga::where('publicidad_id', $id)->get();
+        $nuevasLigas = [];
+
+        // if (!empty($enlacesArray)) {
+            foreach ($enlacesActuales as $enlace) {
+                $idLiga = $enlace['id'] ?? null;
+
+                $redSocial = $enlace['red_social'];
+                $enlaceUrl = $enlace['enlace'];
+                if ($idLiga == null) {
+                    $ligas = new PublicidadLiga();
+                    $ligas->publicidad_id = $id;
+                    $ligas->red_social = $redSocial;
+                    $ligas->enlace = $enlaceUrl;
+                    $ligas->save();
+                    $nuevasLigas[] = $ligas;
+                    return "if";
+                } else {
+                    $existe = $enlacesActuales->where('id', $idLiga)->first();
+
+                    if (!$existe) {
+                        $idsAEliminar = $enlacesActuales->pluck('id')->diff($enlacesArray);
+                        return "segundo if";
+                    } else {
+                        $ligas = PublicidadLiga::find($idLiga);
+                        $ligas->publicidad_id = $id;
+                        $ligas->red_social = $redSocial;
+                        $ligas->enlace = $enlaceUrl;
+                        $ligas->save();
+                        $nuevasLigas[] = $ligas;
+                        return "segundo else";
+                    }
+                }
+
+            }
+        // }
+        $carpeta = $request->id_propiedad . '/mapa';
+
         $publicidad = Publicidad::find($id);
 
         if ($request->hasFile('mapa')) {
@@ -133,11 +187,14 @@ class PublicidadController extends Controller
         $publicidad->descripcion = $request->descripcion;
         $publicidad->video_url = $request->video_url;
         $publicidad->estado = $request->estado;
-        $publicidad->fecha_cierre = $request->fecha_cierre;
-        $publicidad->precio_cierre = $request->precio_cierre;
-        $publicidad->asesor_cierre = $request->asesor_cierre;
+        $publicidad->fecha_cierre = $request->fecha_cierre ?? null;
+        $publicidad->precio_cierre = $request->precio_cierre ?? null;
+        $publicidad->asesor_cierre = $request->asesor_cierre ?? null;
         $publicidad->save();
-        return response()->json($publicidad);
+        return response()->json([
+            'ligas' => $nuevasLigas,
+            $publicidad
+        ]);
     }
     /**
      * Remove the specified resource from storage.
