@@ -135,7 +135,7 @@ class PublicidadController extends Controller
         $enlacesActuales = PublicidadLiga::where('publicidad_id', $id)->get();
         $nuevasLigas = [];
 
-        // if (!empty($enlacesArray)) {
+        if (!empty($enlacesArray)) {
             foreach ($enlacesActuales as $enlace) {
                 $idLiga = $enlace['id'] ?? null;
 
@@ -148,13 +148,13 @@ class PublicidadController extends Controller
                     $ligas->enlace = $enlaceUrl;
                     $ligas->save();
                     $nuevasLigas[] = $ligas;
-                    return "if";
+
                 } else {
                     $existe = $enlacesActuales->where('id', $idLiga)->first();
 
                     if (!$existe) {
                         $idsAEliminar = $enlacesActuales->pluck('id')->diff($enlacesArray);
-                        return "segundo if";
+                        PublicidadLiga::whereIn('id', $idsAEliminar)->delete();
                     } else {
                         $ligas = PublicidadLiga::find($idLiga);
                         $ligas->publicidad_id = $id;
@@ -162,12 +162,12 @@ class PublicidadController extends Controller
                         $ligas->enlace = $enlaceUrl;
                         $ligas->save();
                         $nuevasLigas[] = $ligas;
-                        return "segundo else";
+
                     }
                 }
 
             }
-        // }
+        }
         $carpeta = $request->id_propiedad . '/mapa';
 
         $publicidad = Publicidad::find($id);
