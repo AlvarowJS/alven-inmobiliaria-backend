@@ -131,16 +131,18 @@ class PublicidadController extends Controller
         $enlacesJson = $request->input('enlaces');
 
         // Convierte la cadena JSON en un arreglo asociativo
-        $enlacesArray = json_decode($enlacesJson, true);
+        // $enlacesArray = json_decode($enlacesJson, true);
+        $enlacesArray = $enlacesJson;
         $enlacesActuales = PublicidadLiga::where('publicidad_id', $id)->get();
         $nuevasLigas = [];
 
         if (!empty($enlacesArray)) {
-            foreach ($enlacesActuales as $enlace) {
+            foreach ($enlacesArray as $enlace) {
                 $idLiga = $enlace['id'] ?? null;
 
                 $redSocial = $enlace['red_social'];
                 $enlaceUrl = $enlace['enlace'];
+
                 if ($idLiga == null) {
                     $ligas = new PublicidadLiga();
                     $ligas->publicidad_id = $id;
@@ -150,19 +152,20 @@ class PublicidadController extends Controller
                     $nuevasLigas[] = $ligas;
 
                 } else {
-                    $existe = $enlacesActuales->where('id', $idLiga)->first();
-
-                    if (!$existe) {
-                        $idsAEliminar = $enlacesActuales->pluck('id')->diff($enlacesArray);
-                        PublicidadLiga::whereIn('id', $idsAEliminar)->delete();
-                    } else {
-                        $ligas = PublicidadLiga::find($idLiga);
-                        $ligas->publicidad_id = $id;
-                        $ligas->red_social = $redSocial;
-                        $ligas->enlace = $enlaceUrl;
-                        $ligas->save();
-                        $nuevasLigas[] = $ligas;
-
+                    foreach ($enlacesActuales as $enlaceActual) {
+                        if ($enlaceActual->id == $idLiga) {
+                            $ligas = PublicidadLiga::find($idLiga);
+                            $ligas->publicidad_id = $id;
+                            $ligas->red_social = $redSocial;
+                            $ligas->enlace = $enlaceUrl;
+                            $ligas->save();
+                            $nuevasLigas[] = $ligas;
+                        } else {
+                            $ligas = PublicidadLiga::find($enlaceActual->id);
+                            if ($ligas) {
+                                $ligas->delete();
+                            }
+                        }
                     }
                 }
 
