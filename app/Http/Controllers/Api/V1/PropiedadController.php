@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Exports\PropiedadesMovExport;
 use App\Http\Controllers\Controller;
 use App\Models\Propiedad;
 use Illuminate\Http\Request;
@@ -9,9 +10,14 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\Cliente;
 use App\Models\Asesor;
 use App\Models\User;
+use Maatwebsite\Excel\Facades\Excel;
 
 class PropiedadController extends Controller
 {
+    public function export()
+    {
+        return Excel::download(new PropiedadesMovExport, 'operacion.xlsx');
+    }
     public function filtrarStatus(Request $request)
     {
         $estadoActual = $request->estado;
