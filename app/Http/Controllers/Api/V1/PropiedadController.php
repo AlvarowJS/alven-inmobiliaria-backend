@@ -14,9 +14,12 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class PropiedadController extends Controller
 {
-    public function export()
+    public function export($status, $asesorEx)
     {
-        return Excel::download(new PropiedadesMovExport, 'operacion.xlsx');
+        $export = new PropiedadesMovExport($status, $asesorEx);
+
+        $nombreArchivo = 'reporte_propiedades.xlsx';
+        return Excel::download($export, $nombreArchivo);
     }
     public function filtrarStatus(Request $request)
     {
@@ -53,7 +56,7 @@ class PropiedadController extends Controller
             ->setPaper('a4', 'portrait');
 
         return $pdf->stream('documento.pdf');
-        return $pdf->download('documento.pdf');
+        // return $pdf->download('documento.pdf');
         // if($rol == 2){
         //     $propiedades = Propiedad::with('publicidad', 'caracteristica', 'general', 'direccion', 'cliente', 'foto', 'basico')->find($id);
         //     $asesorActual = Asesor::where('user_id',$id_user)->first();
