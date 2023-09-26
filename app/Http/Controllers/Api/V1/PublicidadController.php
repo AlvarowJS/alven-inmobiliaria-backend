@@ -131,8 +131,8 @@ class PublicidadController extends Controller
         $enlacesJson = $request->input('enlaces');
 
         // Convierte la cadena JSON en un arreglo asociativo
-        // $enlacesArray = json_decode($enlacesJson, true);
-        $enlacesArray = $enlacesJson;
+        $enlacesArray = json_decode($enlacesJson, true);
+        // $enlacesArray = $enlacesJson;
         $enlacesActuales = PublicidadLiga::where('publicidad_id', $id)->get();
         $nuevasLigas = [];
 
