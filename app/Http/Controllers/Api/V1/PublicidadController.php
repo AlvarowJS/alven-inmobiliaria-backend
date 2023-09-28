@@ -54,6 +54,10 @@ class PublicidadController extends Controller
         $publicidad->descripcion = $request->descripcion;
         $publicidad->video_url = $request->video_url;
         $publicidad->estado = $request->estado;
+        $publicidad->fecha_promocion = $request->fecha_promocion ?? null;
+        $publicidad->fecha_manifestacion = $request->fecha_manifestacion ?? null;
+        $publicidad->fecha_cancelada = $request->fecha_cancelada ?? null;
+        $publicidad->fecha_suspendida = $request->fecha_suspendida ?? null;
         $publicidad->fecha_cierre = $request->fecha_cierre ?? null;
         $publicidad->precio_cierre = $request->precio_cierre ?? null;
         $publicidad->asesor_cierre = $request->asesor_cierre ?? null;
@@ -118,6 +122,10 @@ class PublicidadController extends Controller
         $datos->descripcion = $request->descripcion;
         $datos->video_url = $request->video_url;
         $datos->estado = $request->estado;
+        $datos->fecha_promocion = $request->fecha_promocion;
+        $datos->fecha_manifestacion = $request->fecha_manifestacion;
+        $datos->fecha_cancelada = $request->fecha_cancelada;
+        $datos->fecha_suspendida = $request->fecha_suspendida;
         $datos->fecha_cierre = $request->fecha_cierre;
         $datos->precio_cierre = $request->precio_cierre;
         $datos->asesor_cierre = $request->asesor_cierre;
@@ -190,6 +198,10 @@ class PublicidadController extends Controller
         $publicidad->descripcion = $request->descripcion;
         $publicidad->video_url = $request->video_url;
         $publicidad->estado = $request->estado;
+        $publicidad->fecha_promocion = $request->fecha_promocion ?? null;
+        $publicidad->fecha_manifestacion = $request->fecha_manifestacion ?? null;
+        $publicidad->fecha_cancelada = $request->fecha_cancelada ?? null;
+        $publicidad->fecha_suspendida = $request->fecha_suspendida ?? null;
         $publicidad->fecha_cierre = $request->fecha_cierre ?? null;
         $publicidad->precio_cierre = $request->precio_cierre ?? null;
         $publicidad->asesor_cierre = $request->asesor_cierre ?? null;
