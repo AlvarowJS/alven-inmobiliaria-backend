@@ -54,7 +54,7 @@ Route::post('/v1/publicidad-mapa', [Publicidad::class, 'update_fotos']);
 // });
 
 Route::get('/v1/propiedades-publico', [Propiedad::class, 'indexTrue']);
-Route::get('/v1/exportar-propiedad/{id},{id_user}', [Propiedad::class, 'exportarPDF']);
+Route::get('/v1/exportar-propiedad/{id},{id_user}/{estado}', [Propiedad::class, 'exportarPDF']);
 Route::get('/v1/ver-propiedad/{id}', [Propiedad::class, 'show']);
 Route::post('/v1/contacto-register', [Contacto::class, 'store']);
 Route::post('/v1/asesor-foto', [Asesor::class, 'update_fotos']);

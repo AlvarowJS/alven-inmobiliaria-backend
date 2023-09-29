@@ -43,7 +43,7 @@ class PropiedadController extends Controller
         return response()->json($datos);
 
     }
-    public function exportarPdf($id, $id_user)
+    public function exportarPdf($id, $id_user, $estado)
     {
         $verificarRol = User::find($id_user);
         $rol = $verificarRol->role_id;
@@ -52,7 +52,7 @@ class PropiedadController extends Controller
         $asesorActual = Asesor::where('user_id', $id_user)->first();
         $propiedades->asesor = $asesorActual;
 
-        $pdf = Pdf::loadView('pdf.template', compact('propiedades'))
+        $pdf = Pdf::loadView('pdf.template', compact('propiedades','estado'))
             ->setPaper('a4', 'portrait');
 
         return $pdf->stream('documento.pdf');

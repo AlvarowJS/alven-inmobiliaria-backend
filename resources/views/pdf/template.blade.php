@@ -185,24 +185,28 @@
 
 <body>
     <div class="encabezado">
-        <div class="encabezado-foto">
-            @if (isset($propiedades->asesor->foto))
-                <img class="foto-asesor" src="{{ public_path('storage/asesor/' . $propiedades->asesor->foto) }}">
-            @endif
+        @if ($estado == 'true')
+            <div class="encabezado-foto">
+                @if (isset($propiedades->asesor->foto))
+                    <img class="foto-asesor" src="{{ public_path('storage/asesor/' . $propiedades->asesor->foto) }}">
+                @endif
 
-            <div class="nombre-asesor">
-                {{ $propiedades->asesor->nombre ?? '' }} <br>
-                {{ $propiedades->asesor->apellidos ?? '' }}
+                <div class="nombre-asesor">
+                    {{ $propiedades->asesor->nombre ?? '' }} <br>
+                    {{ $propiedades->asesor->apellidos ?? '' }}
+                </div>
             </div>
-        </div>
+        @endif
         <div class="encabezado-logo">
             <img src="{{ public_path('images/logo2.png') }}" class="logo-img" alt="Logo">
         </div>
 
         <div class="encabezado-datos">
             <p>ID: {{ $propiedades->general->numero_ofna ?? '' }}</p>
-            <p>{{ $propiedades->asesor->email ?? '' }}</p>
-            <p>{{ $propiedades->asesor->celular ?? '' }}</p>
+            @if ($estado == 'true')
+                <p>{{ $propiedades->asesor->email ?? '' }}</p>
+                <p>{{ $propiedades->asesor->celular ?? '' }}</p>
+            @endif
         </div>
     </div>
     <div class="portada">
