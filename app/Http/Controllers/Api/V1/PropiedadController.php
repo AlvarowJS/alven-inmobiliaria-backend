@@ -14,9 +14,9 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class PropiedadController extends Controller
 {
-    public function export($status, $asesorEx)
+    public function export($status, $asesorEx, $inicio, $fin)
     {
-        $export = new PropiedadesMovExport($status, $asesorEx);
+        $export = new PropiedadesMovExport($status, $asesorEx, $inicio, $fin);
 
         $nombreArchivo = 'reporte_propiedades.xlsx';
         return Excel::download($export, $nombreArchivo);

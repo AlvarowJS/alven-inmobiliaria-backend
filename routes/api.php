@@ -64,5 +64,5 @@ Route::post('/v1/ordernar-fotos', [Foto::class, 'ordenar']);
 Route::get('/v1/general-id', [General::class, 'generarId']);
 Route::post('/v1/propiedad-filtrado', [Propiedad::class, 'filtrarStatus']);
 
-Route::get('/v1/exportexcel/{status}/{asesor}', [Propiedad::class, 'export']);
+Route::get('/v1/exportexcel/{status}/{asesor}/{inicio}/{fin}', [Propiedad::class, 'export']);
 // Route::get('/v1/exportexcel', [Propiedad::class, 'export']);

@@ -21,16 +21,27 @@ class PropiedadesMovExport implements FromCollection, WithHeadings
     private $asesorEx;
     private $fechaAlta;
 
-    public function __construct($status, $asesorEx)
+    public function __construct($status, $asesorEx, $inicio, $fin)
     {
         $this->status = urldecode($status);
         $this->asesorEx = urldecode($asesorEx);
+        $this->inicio = urldecode($inicio);
+        $this->fin = urldecode($fin);
     }
     /**
      * @return \Illuminate\Support\Collection
      */
     public function collection()
     {
+        $statusMapping = [
+            'En Promocion' => 'publicidads.fecha_promocion',
+            'Con Manifestacion' => 'publicidads.fecha_manifestacion',
+            'Cancelada' => 'publicidads.fecha_cancelada',
+            'Suspendida' => 'publicidads.fecha_suspendida',
+            'Cerrada' => 'publicidads.fecha_cierre'
+        ];
+        $fechaFiltro = isset($statusMapping[$this->status]) ? $statusMapping[$this->status] : 'generals.fecha_alta';
+
         $data = Propiedad::select(
             'generals.numero_ofna',
             DB::raw("CONCAT( COALESCE(direccions.calle, ''), ', ', COALESCE(direccions.numero, ''), ', ', COALESCE(direccions.colonia, ''), ', ', COALESCE(direccions.municipio, ''), ', ', COALESCE(direccions.estado, ''), ', ', COALESCE(direccions.pais, '')) AS direccion_completa"),
@@ -41,14 +52,16 @@ class PropiedadesMovExport implements FromCollection, WithHeadings
             'publicidads.precio_cierre',
             'generals.fecha_alta',
         )
-            // ->whereIn('publicidads.estado', [$this->status])
+            ->whereBetween($fechaFiltro, [$this->inicio, $this->fin])
+
             ->when($this->status !== 'todos', function ($query) {
                 return $query->whereIn('publicidads.estado', [$this->status]);
             })
-            // ->where('generals.asesor_exclusivo', [$this->asesorEx])
             ->when($this->asesorEx !== 'todos', function ($query) {
                 return $query->where('generals.asesor_exclusivo', $this->asesorEx);
             })
+
+
             ->join('publicidads', 'publicidads.id', '=', 'propiedads.publicidad_id')
             ->join('generals', 'generals.id', '=', 'propiedads.general_id')
             ->join('direccions', 'direccions.id', '=', 'propiedads.direccion_id')
@@ -80,41 +93,37 @@ class PropiedadesMovExport implements FromCollection, WithHeadings
             'Con Manifestacion' => 'publicidads.fecha_manifestacion',
             'Cancelada' => 'publicidads.fecha_cancelada',
             'Suspendida' => 'publicidads.fecha_suspendida',
-            'Cerrada' => 'publicidads.fecha_cierre'            
+            'Cerrada' => 'publicidads.fecha_cierre'
         ];
 
-        $fechaInput = isset($statusMapping[$this->status]) ? $statusMapping[$this->status] : 'generals.fecha_alta';       
+        $fechaInput = isset($statusMapping[$this->status]) ? $statusMapping[$this->status] : 'generals.fecha_alta';
 
 
-        $fechaAltaHead = Propiedad::select(
-            // 'generals.fecha_alta',
-            $fechaInput
-        )
-            ->when($this->status !== 'todos', function ($query) {
-                return $query->whereIn('publicidads.estado', [$this->status]);
-            })
-            ->when($this->asesorEx !== 'todos', function ($query) {
-                return $query->where('generals.asesor_exclusivo', $this->asesorEx);
-            })
-            ->join('publicidads', 'publicidads.id', '=', 'propiedads.publicidad_id')
-            ->join('generals', 'generals.id', '=', 'propiedads.general_id')
-            // ->min('generals.fecha_alta');
-            ->min($fechaInput);
+        // $fechaAltaHead = Propiedad::select(            
+        //     $fechaInput
+        // )
+        //     ->when($this->status !== 'todos', function ($query) {
+        //         return $query->whereIn('publicidads.estado', [$this->status]);
+        //     })
+        //     ->when($this->asesorEx !== 'todos', function ($query) {
+        //         return $query->where('generals.asesor_exclusivo', $this->asesorEx);
+        //     })
+        //     ->join('publicidads', 'publicidads.id', '=', 'propiedads.publicidad_id')
+        //     ->join('generals', 'generals.id', '=', 'propiedads.general_id')            
+        //     ->min($fechaInput);
 
-        $fechaAltaHeadFin = Propiedad::select(
-            // 'generals.fecha_alta',
-            $fechaInput
-        )
-            ->when($this->status !== 'todos', function ($query) {
-                return $query->whereIn('publicidads.estado', [$this->status]);
-            })
-            ->when($this->asesorEx !== 'todos', function ($query) {
-                return $query->where('generals.asesor_exclusivo', $this->asesorEx);
-            })
-            ->join('publicidads', 'publicidads.id', '=', 'propiedads.publicidad_id')
-            ->join('generals', 'generals.id', '=', 'propiedads.general_id')
-            // ->max('generals.fecha_alta');
-            ->max($fechaInput);
+        // $fechaAltaHeadFin = Propiedad::select(            
+        //     $fechaInput
+        // )
+        //     ->when($this->status !== 'todos', function ($query) {
+        //         return $query->whereIn('publicidads.estado', [$this->status]);
+        //     })
+        //     ->when($this->asesorEx !== 'todos', function ($query) {
+        //         return $query->where('generals.asesor_exclusivo', $this->asesorEx);
+        //     })
+        //     ->join('publicidads', 'publicidads.id', '=', 'propiedads.publicidad_id')
+        //     ->join('generals', 'generals.id', '=', 'propiedads.general_id')            
+        //     ->max($fechaInput);
 
         $statusMayuscula = strtoupper($this->status);
         $header = [
@@ -122,16 +131,16 @@ class PropiedadesMovExport implements FromCollection, WithHeadings
             [""],
             ["Status", $statusMayuscula],
             ["", "Inicio", "Fin"],
-            ["Periodo", $fechaAltaHead, $fechaAltaHeadFin],
+            ["Periodo", $this->inicio, $this->fin],
             ["Asesor Exclusivo", $this->asesorEx],
             ["Asesor Cierre"],
             [""],
-            [$fechaInput],
             [""],
             [""],
             [""],
-            ["REPORTE DE MOVIMIENTOS DE PROPIEDADES ". $statusMayuscula . ""],
-            ["CORRESPONDIENTES AL PERIODO AL .$fechaAltaHead. AL. $fechaAltaHeadFin "],
+            [""],
+            ["REPORTE DE MOVIMIENTOS DE PROPIEDADES " . $statusMayuscula . ""],
+            ["CORRESPONDIENTES AL PERIODO AL .$this->inicio. AL. $this->fin "],
             [
                 "ID",
                 "Dirección",
