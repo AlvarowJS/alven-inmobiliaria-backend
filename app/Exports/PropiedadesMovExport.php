@@ -51,6 +51,7 @@ class PropiedadesMovExport implements FromCollection, WithHeadings
             'publicidads.precio_venta',
             'publicidads.precio_cierre',
             'generals.fecha_alta',
+            'publicidads.estado',
         )
             ->whereBetween($fechaFiltro, [$this->inicio, $this->fin])
 
@@ -77,6 +78,7 @@ class PropiedadesMovExport implements FromCollection, WithHeadings
                 'asesor_cierre' => $item->asesor_cierre,
                 'precio_venta' => $item->precio_venta,
                 'precio_cierre' => $item->precio_cierre,
+                'estado' => $item->estado,
             ]);
         });
         return $collection;
@@ -99,7 +101,7 @@ class PropiedadesMovExport implements FromCollection, WithHeadings
         $fechaInput = isset($statusMapping[$this->status]) ? $statusMapping[$this->status] : 'generals.fecha_alta';
 
 
-        // $fechaAltaHead = Propiedad::select(            
+        // $fechaAltaHead = Propiedad::select(
         //     $fechaInput
         // )
         //     ->when($this->status !== 'todos', function ($query) {
@@ -109,10 +111,10 @@ class PropiedadesMovExport implements FromCollection, WithHeadings
         //         return $query->where('generals.asesor_exclusivo', $this->asesorEx);
         //     })
         //     ->join('publicidads', 'publicidads.id', '=', 'propiedads.publicidad_id')
-        //     ->join('generals', 'generals.id', '=', 'propiedads.general_id')            
+        //     ->join('generals', 'generals.id', '=', 'propiedads.general_id')
         //     ->min($fechaInput);
 
-        // $fechaAltaHeadFin = Propiedad::select(            
+        // $fechaAltaHeadFin = Propiedad::select(
         //     $fechaInput
         // )
         //     ->when($this->status !== 'todos', function ($query) {
@@ -122,7 +124,7 @@ class PropiedadesMovExport implements FromCollection, WithHeadings
         //         return $query->where('generals.asesor_exclusivo', $this->asesorEx);
         //     })
         //     ->join('publicidads', 'publicidads.id', '=', 'propiedads.publicidad_id')
-        //     ->join('generals', 'generals.id', '=', 'propiedads.general_id')            
+        //     ->join('generals', 'generals.id', '=', 'propiedads.general_id')
         //     ->max($fechaInput);
 
         $statusMayuscula = strtoupper($this->status);
@@ -148,7 +150,8 @@ class PropiedadesMovExport implements FromCollection, WithHeadings
                 "Asesor Exclusiva",
                 "Asesor Cierre",
                 "Precio Promoción",
-                "Precio Cierre"
+                "Precio Cierre",
+                "Estado"
             ]
         ];
 
