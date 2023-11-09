@@ -106,7 +106,7 @@ class PropiedadController extends Controller
      */
     public function index()
     {
-        $datos = Propiedad::with('publicidad', 'caracteristica', 'general', 'direccion', 'cliente.asesor', 'foto', 'basico')
+        $datos = Propiedad::with('publicidad.ligas', 'caracteristica', 'general', 'direccion', 'cliente.asesor', 'foto', 'basico')
             ->orderBy('updated_at', 'desc')
             ->get();
 

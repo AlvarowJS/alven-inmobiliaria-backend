@@ -138,47 +138,102 @@ class PublicidadController extends Controller
         $id = $request->id;
         $enlacesJson = $request->input('enlaces');
 
+
         // Convierte la cadena JSON en un arreglo asociativo
         $enlacesArray = json_decode($enlacesJson, true);
-        // $enlacesArray = $enlacesJson;
+        // $enlacesArray = $enlacesArray->toArray();
         $enlacesActuales = PublicidadLiga::where('publicidad_id', $id)->get();
+        $enlacesActuales = $enlacesActuales->toArray();
         $nuevasLigas = [];
 
-        if (!empty($enlacesArray)) {
-            foreach ($enlacesArray as $enlace) {
-                $idLiga = $enlace['id'] ?? null;
 
-                $redSocial = $enlace['red_social'];
-                $enlaceUrl = $enlace['enlace'];
+        // Encuentra los elementos que están en $enlacesArray y no en $enlacesActuales
 
-                if ($idLiga == null) {
-                    $ligas = new PublicidadLiga();
-                    $ligas->publicidad_id = $id;
-                    $ligas->red_social = $redSocial;
-                    $ligas->enlace = $enlaceUrl;
-                    $ligas->save();
-                    $nuevasLigas[] = $ligas;
+        $nuevasLigas = array_filter($enlacesArray, function ($enlace) {
+            return !isset($enlace['id']);
+        });
 
-                } else {
-                    foreach ($enlacesActuales as $enlaceActual) {
-                        if ($enlaceActual->id == $idLiga) {
-                            $ligas = PublicidadLiga::find($idLiga);
-                            $ligas->publicidad_id = $id;
-                            $ligas->red_social = $redSocial;
-                            $ligas->enlace = $enlaceUrl;
-                            $ligas->save();
-                            $nuevasLigas[] = $ligas;
-                        } else {
-                            $ligas = PublicidadLiga::find($enlaceActual->id);
-                            if ($ligas) {
-                                $ligas->delete();
-                            }
-                        }
-                    }
+        $ligasAEliminar = array_udiff($enlacesActuales, $enlacesArray, function ($a, $b) {
+            if (isset($a['id']) && isset($b['id'])) {
+                return $a['id'] - $b['id'];
+            }
+            return 0;
+        });
+        
+        foreach ($nuevasLigas as $nuevaLiga) {
+            PublicidadLiga::create([
+                'publicidad_id' => $id,
+                'red_social' => $nuevaLiga['red_social'],
+                'enlace' => $nuevaLiga['enlace'],
+            ]);
+        }
+        
+        foreach ($enlacesArray as $nuevaLiga) {
+            $idLiga = $nuevaLiga['id'] ?? null;
+        
+            if ($idLiga) {
+                $existingLiga = PublicidadLiga::find($idLiga);
+                if ($existingLiga) {
+                    $existingLiga->update([
+                        'publicidad_id' => $id,
+                        'red_social' => $nuevaLiga['red_social'],
+                        'enlace' => $nuevaLiga['enlace'],
+                    ]);
                 }
-
             }
         }
+
+        foreach ($ligasAEliminar as $ligaAEliminar) {
+            PublicidadLiga::where('publicidad_id', $id)
+                ->where('id', $ligaAEliminar['id'])
+                ->delete();
+        }
+
+
+        
+        // if (!empty($enlacesArray)) {
+        //     foreach ($enlacesArray as $enlace) {
+
+        //         $idLiga = $enlace['id'] ?? null;                
+        //         $redSocial = $enlace['red_social'];
+        //         $enlaceUrl = $enlace['enlace'];
+
+        //         // Cuando los id de la liga no se mandan se insertan 
+        //         if ($idLiga == null) {
+
+        //             $ligas = new PublicidadLiga();
+        //             $ligas->publicidad_id = $id;
+        //             $ligas->red_social = $redSocial;
+        //             $ligas->enlace = $enlaceUrl;
+        //             $ligas->save();
+        //             $nuevasLigas[] = $ligas;
+        //         } else {
+
+
+        //             foreach ($enlacesActuales as $enlaceActual) {
+        //                 echo $enlaceActual->id;
+        //                 echo '    =    ';
+        //                 echo $idLiga;
+        //                 echo '        ';
+        //                 if ($enlaceActual->id == $idLiga) {
+        //                     $ligas = PublicidadLiga::find($idLiga);
+        //                     $ligas->publicidad_id = $id;
+        //                     $ligas->red_social = $redSocial;
+        //                     $ligas->enlace = $enlaceUrl;
+        //                     $ligas->save();
+        //                     $nuevasLigas[] = $ligas;
+        //                 } else {
+        //                     $ligas = PublicidadLiga::find($enlaceActual->id);
+        //                     if ($ligas) {
+        //                         // $ligas->delete();
+        //                         echo "elimino     ";
+        //                     }
+        //                 }
+        //             }
+        //         }
+
+        //     }
+        // }
         $carpeta = $request->id_propiedad . '/mapa';
 
         $publicidad = Publicidad::find($id);
@@ -193,11 +248,11 @@ class PublicidadController extends Controller
             \Storage::disk('public')->put($pathNuevo, \File::get($files));
             $publicidad->mapa = $nombreNuevo;
         }
-        $publicidad->precio_venta = $request->precio_venta;
-        $publicidad->encabezado = $request->encabezado;
-        $publicidad->descripcion = $request->descripcion;
-        $publicidad->video_url = $request->video_url;
-        $publicidad->estado = $request->estado;
+        $publicidad->precio_venta = $request->input('precio_venta') ?? null;
+        $publicidad->encabezado = $request->encabezado ?? null;
+        $publicidad->descripcion = $request->descripcion ?? null;
+        $publicidad->video_url = $request->video_url ?? null;
+        $publicidad->estado = $request->estado ?? null;
         $publicidad->fecha_promocion = $request->fecha_promocion ?? null;
         $publicidad->fecha_manifestacion = $request->fecha_manifestacion ?? null;
         $publicidad->fecha_cancelada = $request->fecha_cancelada ?? null;
