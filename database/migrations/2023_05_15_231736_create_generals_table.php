@@ -24,6 +24,7 @@ return new class extends Migration
             // $table->date('fecha_credito');
             // $table->date('fecha_inicio');
             $table->string('operacion')->nullable();
+            $table->decimal('comision')->nullable();
             // $table->string('porcentaje')->nullable();
             // $table->string('duracion_dias')->nullable();
             $table->string('requisito_arrendamiento')->nullable();
