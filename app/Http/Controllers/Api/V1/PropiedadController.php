@@ -139,7 +139,9 @@ class PropiedadController extends Controller
             return response()->json(['message' => 'Registro no encontrado'], 404);
         }
 
-        $datos->asesor_id = $datos->cliente->asesor_id;
+        if (!empty($datos->cliente) && !empty($datos->cliente->asesor)) {
+            $datos->asesor_id = $datos->cliente->asesor_id;
+        }
 
         return response()->json($datos);
     }
