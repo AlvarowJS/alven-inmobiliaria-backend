@@ -24,7 +24,7 @@ class PropiedadController extends Controller
     public function filtrarStatus(Request $request)
     {
         $estadoActual = $request->estado;
-        $datos = Propiedad::with('publicidad', 'caracteristica', 'general', 'direccion', 'cliente.asesor', 'foto', 'basico')
+        $datos = Propiedad::with('publicidad.ligas', 'caracteristica', 'general', 'direccion', 'cliente.asesor', 'foto', 'basico')
             ->whereHas('publicidad', function ($query) use ($estadoActual) {
                 $query->where('estado', $estadoActual);
             })
