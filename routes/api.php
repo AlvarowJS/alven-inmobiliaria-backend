@@ -13,6 +13,7 @@ use App\Http\Controllers\Api\V1\PropiedadController as Propiedad;
 use App\Http\Controllers\Api\V1\BasicoController as Basico;
 use App\Http\Controllers\Api\V1\FotoController as Foto;
 use App\Http\Controllers\Api\V1\MedioController as Medio;
+use App\Http\Controllers\Api\V1\PresentacionController as Presentacion;
 use App\Http\Controllers\Api\AuthController as Auth;
 
 /*
@@ -44,6 +45,7 @@ Route::post('/register', [Auth::class, 'register']);
     Route::apiResource('/v1/basicos', Basico::class);
     Route::apiResource('/v1/medios', Medio::class);
     Route::apiResource('/v1/fotos', Foto::class);
+    Route::apiResource('/v1/presentacion', Presentacion::class);
 
     Route::put('/v1/cliente-id/{id}', [Cliente::class, 'registarIdCliente']);
     Route::post('/v1/fotos-img', [Foto::class, 'update_fotos']);
@@ -51,6 +53,8 @@ Route::post('/register', [Auth::class, 'register']);
     Route::put('/v1/actualizar-propiedad/{id}', [Propiedad::class, 'actualizarEstado']);
     Route::put('/v1/estado-propiedad/{id}', [Propiedad::class, 'cambiarEstado']);
     Route::post('/v1/publicidad-mapa', [Publicidad::class, 'update_fotos']);
+    Route::post('/v1/presentacion-foto', [Presentacion::class, 'updateFoto']);
+    
 // });
 
 Route::get('/v1/propiedades-publico', [Propiedad::class, 'indexTrue']);
