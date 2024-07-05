@@ -54,7 +54,7 @@ Route::post('/register', [Auth::class, 'register']);
     Route::put('/v1/estado-propiedad/{id}', [Propiedad::class, 'cambiarEstado']);
     Route::post('/v1/publicidad-mapa', [Publicidad::class, 'update_fotos']);
     Route::post('/v1/presentacion-foto', [Presentacion::class, 'updateFoto']);
-    
+    Route::get('/v1/foto-generador', [Presentacion::class, 'exportarPdf']);
 // });
 
 Route::get('/v1/propiedades-publico', [Propiedad::class, 'indexTrue']);

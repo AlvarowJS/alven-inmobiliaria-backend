@@ -5,9 +5,35 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Models\Presentacion;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class PresentacionController extends Controller
 {
+
+    public function exportarPdf()
+    {    
+        $frase = request()->input('frase');
+        $nombre = request()->input('nombre');
+        $telefono = request()->input('telefono');
+        $imagenFondo = request()->input('imagen');
+
+        $presentacion = [
+            'frase'=> $frase, 
+            'imagen' => $imagenFondo, 
+            'nombre' => $nombre, 
+            'telefono' => $telefono
+        ];
+        // return $presentacion;
+        // $pdf = Pdf::loadView('presentacion.template', compact('presentacion'))
+        $pdf = Pdf::loadView('presentacion.template', compact('frase', 'nombre', 'telefono', 'imagenFondo'))
+            ->setPaper('a4', 'landscape');
+
+            
+
+        return $pdf->stream('presentacion.pdf');
+      
+
+    }
     /**
      * Display a listing of the resource.
      */
@@ -87,11 +113,10 @@ class PresentacionController extends Controller
             $path = 'fotoPresentacion/' . $nombre;
             \Storage::disk('public')->put($path, \File::get($imagen));
             $presentacion->foto = $nombre;
-        }        
+        }
         $presentacion->save();
 
         return response()->json(['mensaje' => 'Presentación actualizada exitosamente', 'data' => $presentacion], 200);
-
     }
     /**
      * Remove the specified resource from storage.
