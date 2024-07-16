@@ -30,24 +30,24 @@
             z-index: 2;
         }
 
-        .diagonal-left {
+        /* .diagonal-left {
             left: 0;
-            background-color: rgba(0, 0, 0, 0.5); /* Fondo semitransparente */
+            background-color: rgba(0, 0, 0, 0.5); 
             transform: skewY(-45deg);
             transform-origin: top left;
         }
 
         .diagonal-right {
             right: 0;
-            background-color: white; /* Fondo blanco */
+            background-color: white;
             transform: skewY(45deg);
             transform-origin: top right;
-        }
+        } */
 
         .logo-container {
             position: absolute;
             top: 20px;
-            left: 20px;
+            right: 20px;
             width: 160px;
             height: 140px;
             display: flex;
@@ -70,8 +70,8 @@
             font-weight: bold;
             text-shadow: 2px 2px 4px #000;
             margin-top:200px;
-            margin-right: 600px;
-            margin-left: 20px;
+            margin-right: 400px;
+            /* margin-left: 20px; */
             word-break: break-word;
             line-height: 1.2;
             padding: 4px;
@@ -92,7 +92,7 @@
             text-shadow: 2px 2px 4px #000;
             /* margin-bottom: 20px; */
             margin-right: 20px;
-            margin-left: 20px;
+            /* margin-left: 20px; */
             background-color: rgba(255, 0, 0, 0.5);
             padding-left: 10px;
             padding-right: 10px;
@@ -103,8 +103,7 @@
 <body>
     <div class="container">
         <img src="{{ public_path('storage/fotoPresentacion/'.$imagenFondo) }}" alt="Imagen" class="background-img">
-        <div class="diagonal-left"></div>
-        <div class="diagonal-right"></div>
+      
         <div class="logo-container">
             <img src="{{ public_path('images/logo2.png') }}" alt="Logo" class="logo">
         </div>
