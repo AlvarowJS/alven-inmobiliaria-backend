@@ -247,7 +247,7 @@
             <p><b>• Superficie del terreno:</b> {{ $propiedades->basico->superficie_terreno ?? '' }}</p>
         @endif
         @if ($propiedades->basico->superficie_construccion)
-            <p><b>• Superficie de construcción:</b> {{ $propiedades->basico->superficie_construccion ?? ''}}</p>
+            <p><b>• Superficie de construcción:</b> {{ $propiedades->basico->superficie_construccion ?? '' }}</p>
         @endif
         @if ($propiedades->basico->niveles_construidos)
             <p><b>• Niveles construidos:</b> {{ $propiedades->basico->niveles_construidos ?? '' }}</p>
@@ -256,28 +256,28 @@
             <p><b>• Número de elevadores:</b> {{ $propiedades->basico->numero_elevadores ?? '' }}</p>
         @endif
         @if ($propiedades->basico->estacionamiento)
-            <p><b>• Estacionamiento:</b> {{ $propiedades->basico->estacionamiento ?? ''}}</p>
+            <p><b>• Estacionamiento:</b> {{ $propiedades->basico->estacionamiento ?? '' }}</p>
         @endif
         @if ($propiedades->basico->cocinas)
-            <p><b>• Cocinas:</b> {{ $propiedades->basico->cocinas ?? ''}}</p>
+            <p><b>• Cocinas:</b> {{ $propiedades->basico->cocinas ?? '' }}</p>
         @endif
         @if ($propiedades->basico->banios)
             <p><b>• Baños:</b> {{ $propiedades->basico->banios ?? '' }}</p>
         @endif
         @if ($propiedades->basico->medios_banios)
-            <p><b>• Medios Baños:</b> {{ $propiedades->basico->medios_banios ?? ''}}</p>
+            <p><b>• Medios Baños:</b> {{ $propiedades->basico->medios_banios ?? '' }}</p>
         @endif
         @if ($propiedades->basico->numero_casas)
-            <p><b>• Número de casas:</b> {{ $propiedades->basico->numero_casas ?? ''}}</p>
+            <p><b>• Número de casas:</b> {{ $propiedades->basico->numero_casas ?? '' }}</p>
         @endif
         @if ($propiedades->basico->piso_ubicado)
-            <p><b>• Piso Ubicado:</b> {{ $propiedades->basico->piso_ubicado ?? ''}}</p>
+            <p><b>• Piso Ubicado:</b> {{ $propiedades->basico->piso_ubicado ?? '' }}</p>
         @endif
         @if ($propiedades->basico->recamaras)
-            <p><b>• Recamaras:</b> {{ $propiedades->basico->recamaras ?? ''}}</p>
+            <p><b>• Recamaras:</b> {{ $propiedades->basico->recamaras ?? '' }}</p>
         @endif
         @if ($propiedades->basico->edad)
-            <p><b>• Edad del inmueble:</b> {{ $propiedades->basico->edad ?? ''}}</p>
+            <p><b>• Edad del inmueble:</b> {{ $propiedades->basico->edad ?? '' }}</p>
         @endif
 
         {{-- <p><b>• Superficie del terreno:</b> {{ $propiedades->basico->superficie_terreno ?? '' }}</p>
@@ -296,10 +296,13 @@
 
     <hr>
     @php
-        $espaciosArray = json_decode($propiedades->caracteristica->espacios, true);
-        // $totalEspacios = count($espaciosArray);
-        if (is_array($espaciosArray)) {
-            $totalEspacios = count($espaciosArray);
+        if (isset($propiedades->caracteristica->espacios) && !is_null($propiedades->caracteristica->espacios)) {
+            $espaciosArray = json_decode($propiedades->caracteristica->espacios, true);
+            if (is_array($espaciosArray)) {
+                $totalEspacios = count($espaciosArray);
+            } else {
+                $totalEspacios = 0;
+            }
         } else {
             $totalEspacios = 0;
         }
