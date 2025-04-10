@@ -11,7 +11,10 @@ class FotoController extends Controller
 {
     public function ordenar(Request $request)
     {
-        $datos = $request->json()->all();
+        $idPropiedad = $request->input('idPropiedad');
+        $datos = $request->input('fotos');
+
+
         foreach ($datos as $dato) {
             $id = $dato['id'];
             $orden = $dato['orden'];
@@ -19,11 +22,11 @@ class FotoController extends Controller
             $foto = Foto::find($id);
             $foto->orden = $orden;
             $foto->save();
-
         }
-        $data = Foto::orderBy('orden')->get();
+        $data = Foto::orderBy('orden')
+            ->where('propiedad_id',$idPropiedad)
+            ->get();
         return response()->json($data);
-
     }
     /**
      * Display a listing of the resource.
@@ -83,7 +86,6 @@ class FotoController extends Controller
                 $nameFile = basename($arrFiles[$i]);
 
                 if (in_array($nameFile, $fotosArray)) {
-
                 } else {
                     $fotos = new Foto([
                         'propiedad_id' => $request->propiedad_id,
@@ -98,8 +100,6 @@ class FotoController extends Controller
         } else {
             return "erro";
         }
-
-
     }
 
     /**
