@@ -186,16 +186,16 @@
 <body>
     <div class="encabezado">
         @if ($estado == 'true')
-        <div class="encabezado-foto">
-            @if (isset($propiedades->asesor->foto))
-            <img class="foto-asesor" src="{{ public_path('storage/asesor/' . $propiedades->asesor->foto) }}">
-            @endif
+            <div class="encabezado-foto">
+                @if (isset($propiedades->asesor->foto))
+                    <img class="foto-asesor" src="{{ public_path('storage/asesor/' . $propiedades->asesor->foto) }}">
+                @endif
 
-            <div class="nombre-asesor">
-                {{ $propiedades->asesor->nombre ?? '' }} <br>
-                {{ $propiedades->asesor->apellidos ?? '' }}
+                <div class="nombre-asesor">
+                    {{ $propiedades->asesor->nombre ?? '' }} <br>
+                    {{ $propiedades->asesor->apellidos ?? '' }}
+                </div>
             </div>
-        </div>
         @endif
         <div class="encabezado-logo">
             <img src="{{ public_path('images/logo2.png') }}" class="logo-img" alt="Logo">
@@ -204,16 +204,16 @@
         <div class="encabezado-datos">
             <p>ID: {{ $propiedades->general->numero_ofna ?? '' }}</p>
             @if ($estado == 'true')
-            <p>{{ $propiedades->asesor->email ?? '' }}</p>
-            <p>{{ $propiedades->asesor->celular ?? '' }}</p>
+                <p>{{ $propiedades->asesor->email ?? '' }}</p>
+                <p>{{ $propiedades->asesor->celular ?? '' }}</p>
             @endif
         </div>
     </div>
     <div class="portada">
         @if (count($propiedades->foto) > 0)
-        <img class="portada-img"
-            src="{{ public_path('storage/' . $propiedades->id . '/' . $propiedades->foto[0]->fotos) }}"
-            alt="Foto">
+            <img class="portada-img"
+                src="{{ public_path('storage/' . $propiedades->id . '/' . $propiedades->foto[0]->fotos) }}"
+                alt="Foto">
         @endif
     </div>
 
@@ -245,40 +245,40 @@
 
     <div class="basicos">
         @if ($propiedades->basico->superficie_terreno)
-        <p><b>• Superficie del terreno:</b> {{ $propiedades->basico->superficie_terreno ?? '' }}</p>
+            <p><b>• Superficie del terreno:</b> {{ $propiedades->basico->superficie_terreno ?? '' }}</p>
         @endif
         @if ($propiedades->basico->superficie_construccion)
-        <p><b>• Superficie de construcción:</b> {{ $propiedades->basico->superficie_construccion ?? '' }}</p>
+            <p><b>• Superficie de construcción:</b> {{ $propiedades->basico->superficie_construccion ?? '' }}</p>
         @endif
         @if ($propiedades->basico->niveles_construidos)
-        <p><b>• Niveles construidos:</b> {{ $propiedades->basico->niveles_construidos ?? '' }}</p>
+            <p><b>• Niveles construidos:</b> {{ $propiedades->basico->niveles_construidos ?? '' }}</p>
         @endif
         @if ($propiedades->basico->numero_elevadores)
-        <p><b>• Número de elevadores:</b> {{ $propiedades->basico->numero_elevadores ?? '' }}</p>
+            <p><b>• Número de elevadores:</b> {{ $propiedades->basico->numero_elevadores ?? '' }}</p>
         @endif
         @if ($propiedades->basico->estacionamiento)
-        <p><b>• Estacionamiento:</b> {{ $propiedades->basico->estacionamiento ?? '' }}</p>
+            <p><b>• Estacionamiento:</b> {{ $propiedades->basico->estacionamiento ?? '' }}</p>
         @endif
         @if ($propiedades->basico->cocinas)
-        <p><b>• Cocinas:</b> {{ $propiedades->basico->cocinas ?? '' }}</p>
+            <p><b>• Cocinas:</b> {{ $propiedades->basico->cocinas ?? '' }}</p>
         @endif
         @if ($propiedades->basico->banios)
-        <p><b>• Baños:</b> {{ $propiedades->basico->banios ?? '' }}</p>
+            <p><b>• Baños:</b> {{ $propiedades->basico->banios ?? '' }}</p>
         @endif
         @if ($propiedades->basico->medios_banios)
-        <p><b>• Medios Baños:</b> {{ $propiedades->basico->medios_banios ?? '' }}</p>
+            <p><b>• Medios Baños:</b> {{ $propiedades->basico->medios_banios ?? '' }}</p>
         @endif
         @if ($propiedades->basico->numero_casas)
-        <p><b>• Número de casas:</b> {{ $propiedades->basico->numero_casas ?? '' }}</p>
+            <p><b>• Número de casas:</b> {{ $propiedades->basico->numero_casas ?? '' }}</p>
         @endif
         @if ($propiedades->basico->piso_ubicado)
-        <p><b>• Piso Ubicado:</b> {{ $propiedades->basico->piso_ubicado ?? '' }}</p>
+            <p><b>• Piso Ubicado:</b> {{ $propiedades->basico->piso_ubicado ?? '' }}</p>
         @endif
         @if ($propiedades->basico->recamaras)
-        <p><b>• Recamaras:</b> {{ $propiedades->basico->recamaras ?? '' }}</p>
+            <p><b>• Recamaras:</b> {{ $propiedades->basico->recamaras ?? '' }}</p>
         @endif
         @if ($propiedades->basico->edad)
-        <p><b>• Edad del inmueble:</b> {{ $propiedades->basico->edad ?? '' }}</p>
+            <p><b>• Edad del inmueble:</b> {{ $propiedades->basico->edad ?? '' }}</p>
         @endif
 
         {{-- <p><b>• Superficie del terreno:</b> {{ $propiedades->basico->superficie_terreno ?? '' }}</p>
@@ -296,95 +296,191 @@
     </div>
 
     <hr>
+    {{-- Espacios --}}
     @php
-    if (isset($propiedades->caracteristica->espacios) && !is_null($propiedades->caracteristica->espacios)) {
-    $espaciosArray = json_decode($propiedades->caracteristica->espacios, true);
-    if (is_array($espaciosArray)) {
-    $totalEspacios = count($espaciosArray);
-    } else {
-    $totalEspacios = 0;
-    }
-    } else {
-    $totalEspacios = 0;
-    }
+        if (isset($propiedades->caracteristica->espacios) && !is_null($propiedades->caracteristica->espacios)) {
+            $espaciosArray = json_decode($propiedades->caracteristica->espacios, true);
+
+            if (is_array($espaciosArray)) {
+                $totalEspacios = count($espaciosArray);
+            } else {
+                $totalEspacios = 0;
+            }
+        } else {
+            $totalEspacios = 0;
+        }
     @endphp
-
-    @for ($i = 0; $i < $totalEspacios; $i +=4)
+    @if ($totalEspacios > 0)
+        <div>
+            <b>Espacios</b>
+        </div>
+    @endif
+    @for ($i = 0; $i < $totalEspacios; $i += 4)
         <div class="column">
-        <ul>
-            @for ($j = $i; $j < min($i + 4, $totalEspacios); $j++)
-                <li>{{ $espaciosArray[$j] }}</li>
+            <ul>
+                @for ($j = $i; $j < min($i + 4, $totalEspacios); $j++)
+                    <li>{{ $espaciosArray[$j] }}</li>
                 @endfor
-        </ul>
+            </ul>
         </div>
-        @endfor
-
-        <div class="clear"></div>
-
-        <hr>
-
-        <div class="descripcion">
-            <b>Descripción</b>
-            <p>{!! nl2br(e($propiedades->publicidad->descripcion ?? '')) !!}</p>
+    @endfor
+    {{-- Instalaciones --}}
+    @php
+        if (
+            isset($propiedades->caracteristica->instalaciones) &&
+            !is_null($propiedades->caracteristica->instalaciones)
+        ) {
+            $instalacionesArray = json_decode($propiedades->caracteristica->instalaciones, true);
+            if (is_array($instalacionesArray)) {
+                $totalInstalaciones = count($instalacionesArray);
+            } else {
+                $totalInstalaciones = 0;
+            }
+        } else {
+            $totalInstalaciones = 0;
+        }
+    @endphp
+    <div class="clear"></div>
+    @if ($totalInstalaciones > 0)
+        <div>
+            <b>Instalaciones</b>
         </div>
+    @endif
+    @for ($i = 0; $i < $totalInstalaciones; $i += 4)
+        <div class="column">
+            <ul>
+                @for ($j = $i; $j < min($i + 4, $totalInstalaciones); $j++)
+                    <li>{{ $instalacionesArray[$j] }}</li>
+                @endfor
+            </ul>
+        </div>
+    @endfor
+    {{-- Restricciones --}}
+    @php
+        if (
+            isset($propiedades->caracteristica->restricciones) &&
+            !is_null($propiedades->caracteristica->restricciones)
+        ) {
+            $restriccionesArray = json_decode($propiedades->caracteristica->restricciones, true);
+            if (is_array($restriccionesArray)) {
+                $totalRestriccion = count($restriccionesArray);
+            } else {
+                $totalRestriccion = 0;
+            }
+        } else {
+            $totalRestriccion = 0;
+        }
+    @endphp
+    <div class="clear"></div>
+    @if ($totalRestriccion > 0)
+        <div>
+            <b>Restricciones</b>
+        </div>
+    @endif
+    @for ($i = 0; $i < $totalRestriccion; $i += 4)
+        <div class="column">
+            <ul>
+                @for ($j = $i; $j < min($i + 4, $totalRestriccion); $j++)
+                    <li>{{ $restriccionesArray[$j] }}</li>
+                @endfor
+            </ul>
+        </div>
+    @endfor
+    {{-- Extras --}}
+    @php
+        if (isset($propiedades->caracteristica->extras) && !is_null($propiedades->caracteristica->extras)) {
+            $extrasArray = json_decode($propiedades->caracteristica->extras, true);
+            if (is_array($extrasArray)) {
+                $totalextras = count($extrasArray);
+            } else {
+                $totalextras = 0;
+            }
+        } else {
+            $totalextras = 0;
+        }
+    @endphp
+    <div class="clear"></div>
+    @if ($totalextras > 0)
+        <div>
+            <b>Extras</b>
+        </div>
+    @endif
+    @for ($i = 0; $i < $totalextras; $i += 4)
+        <div class="column">
+            <ul>
+                @for ($j = $i; $j < min($i + 4, $totalextras); $j++)
+                    <li>{{ $extrasArray[$j] }}</li>
+                @endfor
+            </ul>
+        </div>
+    @endfor
+    {{-- Fin de caracterisitcas --}}
+    <div class="clear"></div>
 
-        <hr>
+    <hr>
 
-        <div class="direccion">
-            <b>Ubicación</b>
-            <p>{{ $propiedades->direccion->calle ?? '' }} {{ $propiedades->direccion->numero ?? '' }} ,
-                {{ $propiedades->direccion->municipio ?? '' }} , {{ $propiedades->direccion->estado ?? '' }}
-            </p>
+    <div class="descripcion">
+        <b>Descripción</b>
+        <p>{!! nl2br(e($propiedades->publicidad->descripcion ?? '')) !!}</p>
+    </div>
 
-            <b>Referencias</b> <br>
-            <div class="direccion-mapa">
-                @if (isset($propiedades->publicidad->mapa))
+    <hr>
+
+    <div class="direccion">
+        <b>Ubicación</b>
+        <p>{{ $propiedades->direccion->calle ?? '' }} {{ $propiedades->direccion->numero ?? '' }} ,
+            {{ $propiedades->direccion->municipio ?? '' }} , {{ $propiedades->direccion->estado ?? '' }}
+        </p>
+
+        <b>Referencias</b> <br>
+        <div class="direccion-mapa">
+            @if (isset($propiedades->publicidad->mapa))
                 <img class="direccion-img"
                     src="{{ public_path('storage/' . $propiedades->id . '/mapa/' . $propiedades->publicidad->mapa) }}"
                     alt="Foto">
-                @endif
-            </div>
+            @endif
         </div>
+    </div>
 
-        <hr>
+    <hr>
 
 
-        <div class="galeria">
-            <b style="margin-left: 40px">Catálogo de fotos</b>
-            <br>
+    <div class="galeria">
+        <b style="margin-left: 40px">Catálogo de fotos</b>
+        <br>
 
-            <table style="width:100%">
-                @foreach ($propiedades->foto as $index => $foto)
+        <table style="width:100%">
+            @foreach ($propiedades->foto as $index => $foto)
                 @if ($index % 2 === 0)
-                <tr>
-                    @endif
-                    <td>
-                        <img class="galeria-img"
-                            src="{{ public_path('storage/' . $propiedades->id . '/' . $foto->fotos) }}" alt="Foto">
-                    </td>
-                    @if ($index % 2 !== 0 || $loop->last)
-                </tr>
+                    <tr>
                 @endif
-                @endforeach
-            </table>
-            <div class="galeria-container">
-
-            </div>
-
+                <td>
+                    <img class="galeria-img"
+                        src="{{ public_path('storage/' . $propiedades->id . '/' . $foto->fotos) }}" alt="Foto">
+                </td>
+                @if ($index % 2 !== 0 || $loop->last)
+                    </tr>
+                @endif
+            @endforeach
+        </table>
+        <div class="galeria-container">
 
         </div>
 
-        <div class="pie">
-            <b>Dirección: C. J. Enrique Pestalozzi 583 - CDMX, México</b> <br>
-            <b>Teléfono: +52 55 11 07 87 17 | www.alven-inmobiliaria.com.mx </b>
-            <div style="margin-top: 20px; ">
-                <p>Propiedad sujeta a disponibilidad.</p>
-                <p>Precio sujeto a cambios sin previo aviso.</p>
-                <p>El envío de esta ficha no compromete a las partes a la suscripción de ningún documento legal. La
-                    información y medidas </p>
-                <p>son aproximadas y deberán ratificarse con la documentación pertinente.</p>
-            </div>
+
+    </div>
+
+    <div class="pie">
+        <b>Dirección: C. J. Enrique Pestalozzi 583 - CDMX, México</b> <br>
+        <b>Teléfono: +52 55 11 07 87 17 | www.alven-inmobiliaria.com.mx </b>
+        <div style="margin-top: 20px; ">
+            <p>Propiedad sujeta a disponibilidad.</p>
+            <p>Precio sujeto a cambios sin previo aviso.</p>
+            <p>El envío de esta ficha no compromete a las partes a la suscripción de ningún documento legal. La
+                información y medidas </p>
+            <p>son aproximadas y deberán ratificarse con la documentación pertinente.</p>
         </div>
+    </div>
 
 </body>
 
