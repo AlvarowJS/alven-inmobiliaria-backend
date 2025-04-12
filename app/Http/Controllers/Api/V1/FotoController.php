@@ -24,7 +24,7 @@ class FotoController extends Controller
             $foto->save();
         }
         $data = Foto::orderBy('orden')
-            ->where('propiedad_id',$idPropiedad)
+            ->where('propiedad_id', $idPropiedad)
             ->get();
         return response()->json($data);
     }
@@ -67,7 +67,7 @@ class FotoController extends Controller
         if ($request->hasFile('fotos')) {
 
             foreach ($files as $file) {
-                $nombre = uniqid() . '.' . $file->getClientOriginalName();
+                $nombre = $file->getClientOriginalName() . '.' . uniqid() . '.png';
                 $path = $carpeta . '/' . $nombre;
                 \Storage::disk('public')->put($path, \File::get($file));
             }
@@ -108,14 +108,11 @@ class FotoController extends Controller
     public function show($id)
     {
         $datos = Propiedad::find($id);
-        $fotos = $datos->foto;
-        // return $fotos;
-        return response()->json($fotos);
-        // $datos = Foto::find($id);
-        // if (!$datos) {
-        //     return response()->json(['message' => 'Registro no encontrado'], 404);
-        // }
-        // return response()->json($datos);
+        $fotos = $datos->foto->sortBy(function ($foto) {
+            return empty($foto->orden) ? $foto->nombre : $foto->orden;
+        });
+
+        return response()->json($fotos->values());
     }
 
     /**
@@ -132,7 +129,7 @@ class FotoController extends Controller
         $files = $request->file('fotos');
 
         \Storage::disk('public')->delete($carpeta . '/' . $nombreArchivo);
-        $nombreNuevo = uniqid() . '.' . $files->getClientOriginalName();
+        $nombreNuevo = $files->getClientOriginalName() . '.' . uniqid() . '.png';
         $pathNuevo = $carpeta . '/' . $nombreNuevo;
         \Storage::disk('public')->put($pathNuevo, \File::get($files));
 
