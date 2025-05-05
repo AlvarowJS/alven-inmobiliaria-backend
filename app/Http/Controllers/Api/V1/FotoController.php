@@ -109,7 +109,17 @@ class FotoController extends Controller
     {
         $datos = Propiedad::find($id);
         $fotos = $datos->foto->sortBy(function ($foto) {
-            return empty($foto->orden) ? $foto->nombre : $foto->orden;
+            if (!empty($foto->orden)) {
+                return $foto->orden;
+            }
+
+            // Extraer número del nombre (por ejemplo, de "10.jpg" obtener 10)
+            if (preg_match('/(\d+)/', $foto->nombre, $matches)) {
+                return (int) $matches[1];
+            }
+
+            // Si no hay número, poner un valor alto para que vaya al final
+            return PHP_INT_MAX;
         });
 
         return response()->json($fotos->values());
