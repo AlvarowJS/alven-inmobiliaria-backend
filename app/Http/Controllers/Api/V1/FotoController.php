@@ -113,8 +113,7 @@ class FotoController extends Controller
                 return $foto->orden;
             }
 
-            // Extraer número del nombre (por ejemplo, de "10.jpg" obtener 10)
-            if (preg_match('/(\d+)/', $foto->nombre, $matches)) {
+            if (preg_match('/(\d+)/', $foto->fotos, $matches)) {
                 return (int) $matches[1];
             }
 
