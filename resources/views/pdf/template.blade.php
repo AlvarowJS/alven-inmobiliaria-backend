@@ -280,7 +280,9 @@
         @if ($propiedades->basico && $propiedades->basico->edad)
             <p><b>• Edad del inmueble:</b> {{ $propiedades->basico->edad ?? '' }}</p>
         @endif
-
+        @if ($propiedades->basico && $propiedades->basico->cuota_mantenimiento)
+            <p><b>• Cuota de mantenimiento:</b> {{ $propiedades->basico->cuota_mantenimiento ?? '' }}</p>
+        @endif
         {{-- <p><b>• Superficie del terreno:</b> {{ $propiedades->basico->superficie_terreno ?? '' }}</p>
         <p><b>• Superficie de construcción:</b> {{ $propiedades->basico->superficie_construccion ?? '' }}</p>
         <p><b>• Niveles construidos:</b> {{ $propiedades->basico->niveles_construidos ?? '' }}</p>
