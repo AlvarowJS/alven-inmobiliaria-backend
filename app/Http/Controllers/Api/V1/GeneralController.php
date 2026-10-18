@@ -44,6 +44,7 @@ class GeneralController extends Controller
         // $general->duracion_dias = $request->duracion_dias;
         $general->requisito_arrendamiento = $request->requisito_arrendamiento;
         $general->comision = $request->comision;
+        $general->observaciones = $request->observaciones;
         $general->save();
 
         $id = $general->id;
@@ -91,6 +92,7 @@ class GeneralController extends Controller
         // $general->duracion_dias = $request->duracion_dias;
         $general->requisito_arrendamiento = $request->requisito_arrendamiento;
         $general->comision = $request->comision;
+        $general->observaciones = $request->observaciones;
         $general->save();
         return response()->json($general);
     }

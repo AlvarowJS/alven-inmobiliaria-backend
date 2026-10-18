@@ -14,6 +14,17 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class PropiedadController extends Controller
 {
+
+    public function mostrarPropiedadGeneral($id)
+    {
+        $propiedad = Propiedad::with('general')->find($id);
+
+        if (!$propiedad) {
+            return response()->json(['message' => 'Registro no encontrado'], 404);
+        }
+
+        return response()->json($propiedad->general);
+    }
     public function export($status, $asesorEx, $inicio, $fin)
     {
         $export = new PropiedadesMovExport($status, $asesorEx, $inicio, $fin);
