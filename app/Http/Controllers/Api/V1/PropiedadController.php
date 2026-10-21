@@ -17,13 +17,13 @@ class PropiedadController extends Controller
 
     public function mostrarPropiedadGeneral($id)
     {
-        $propiedad = Propiedad::with('general')->find($id);
+        $propiedad = Propiedad::with('general', 'direccion')->find($id);
 
         if (!$propiedad) {
             return response()->json(['message' => 'Registro no encontrado'], 404);
         }
 
-        return response()->json($propiedad->general);
+        return response()->json($propiedad);
     }
     public function export($status, $asesorEx, $inicio, $fin)
     {
